@@ -1,5 +1,6 @@
 package com.closedai.closedai.prompt;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,10 @@ public class PromptController {
 
     @GetMapping
     public Iterable<Prompt> getAllPrompts() {
-        return service.getAllPrompts();
+        long start = System.currentTimeMillis();
+        Iterable<Prompt> all = service.getAllPrompts();
+        System.out.println("Fetched all prompts in " + (System.currentTimeMillis() - start) + " ms");
+        return all;
     }
 
     @DeleteMapping("/{id}")
@@ -61,5 +65,10 @@ public class PromptController {
     @GetMapping("/response/{id}")
     public String getPromptResponse(@PathVariable String id) {
         return redisQueueService.getResponse(id);
+    }
+
+    @GetMapping("/response/all")
+    public Map<String, String> getAllPromptResponse() {
+        return redisQueueService.getAllResponses();
     }
 }

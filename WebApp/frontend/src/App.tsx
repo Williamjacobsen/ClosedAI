@@ -1,10 +1,13 @@
 import { Search } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 function App() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputText, setInputText] = useState("");
+  const [prompts, setPrompts] = useState<
+    { id: number; value: any; type: string }[]
+  >([]);
 
   const handleInput = () => {
     const textarea = textareaRef.current;
@@ -36,6 +39,44 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const getAllPrompts = async () => {
+      try {
+        const prompts = await axios.get("http://localhost:8080/prompt");
+        const responses = await axios.get(
+          "http://localhost:8080/prompt/response/all"
+        );
+
+        let merged = [];
+        let j = 0;
+        for (let i = 0; i < prompts.data.length; i++) {
+          merged[j] = { id: i, value: prompts.data[i].content, type: "prompt" };
+          j += 2;
+        }
+        j = 1;
+        for (let i = 0; i < Object.keys(responses.data).length; i++) {
+          merged[j] = {
+            id: i,
+            value: Object.values(responses.data)[i],
+            type: "response",
+          };
+          j += 2;
+        }
+
+        console.log(merged);
+
+        setPrompts(merged);
+
+        console.log("prompts:", prompts.data);
+        console.log("responses:", responses.data);
+      } catch (error) {
+        console.error("Error sending POST request:", error);
+      }
+    };
+
+    getAllPrompts();
+  }, []);
+
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Title */}
@@ -45,22 +86,16 @@ function App() {
 
       {/* Response Area */}
       <div className="flex-1 overflow-y-auto px-4">
-        <div className="max-w-2xl mx-auto space-y-4">
-          <div className="bg-white p-4 rounded shadow whitespace-pre-wrap">
-            {`This is a long response that goes over multiple lines.
-
-It preserves line breaks.
-
-Even if the text gets very long, it will wrap nicely.`}
-          </div>
-
-          <div className="bg-white p-4 rounded shadow whitespace-pre-wrap">
-            {`Another response here.
-
-- With bullet points
-- And line breaks
-- And more text just to make sure it scrolls nicely when it gets really tall.`}
-          </div>
+        <div className="max-w-2xl mx-auto space-y-4 pt-4">
+          {prompts.map((prompt: any, idx: number) => (
+            <div
+              key={idx}
+              className="bg-white p-4 rounded shadow whitespace-pre-wrap"
+            >
+              {prompt.type === "prompt" ? "Prompt:\n" : "Response:\n"}
+              {prompt.value}
+            </div>
+          ))}
         </div>
       </div>
 

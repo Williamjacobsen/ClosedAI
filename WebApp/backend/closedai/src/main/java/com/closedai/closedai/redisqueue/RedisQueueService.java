@@ -1,5 +1,6 @@
 package com.closedai.closedai.redisqueue;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -37,5 +38,18 @@ public class RedisQueueService {
 
     public String getResponse(String id) {
         return redisTemplate.opsForValue().get("response:" + id);
+    }
+
+    public Map<String, String> getAllResponses() {
+        var keys = redisTemplate.keys("response:*");
+        if (keys == null || keys.isEmpty()) return Map.of();
+
+        Map<String, String> result = new HashMap<>();
+        for (String key : keys) {
+            String value = redisTemplate.opsForValue().get(key);
+            result.put(key.replace("response:", ""), value); // trim prefix for clarity
+        }
+
+        return result;
     }
 }
