@@ -47,21 +47,23 @@ function App() {
           "http://localhost:8080/prompt/response/all"
         );
 
-        let merged = [];
-        let j = 0;
-        for (let i = 0; i < prompts.data.length; i++) {
-          merged[j] = { id: i, value: prompts.data[i].content, type: "prompt" };
-          j += 2;
-        }
-        j = 1;
-        for (let i = 0; i < Object.keys(responses.data).length; i++) {
-          merged[j] = {
-            id: i,
-            value: Object.values(responses.data)[i],
-            type: "response",
-          };
-          j += 2;
-        }
+        let merged: any[] = [];
+        prompts.data.forEach((prompt: any) => {
+          merged.push({
+            id: prompt.id,
+            value: prompt.content,
+            type: "prompt",
+          });
+
+          const response = responses.data[prompt.id];
+          if (response) {
+            merged.push({
+              id: prompt.id,
+              value: response,
+              type: "response",
+            });
+          }
+        });
 
         console.log(merged);
 
