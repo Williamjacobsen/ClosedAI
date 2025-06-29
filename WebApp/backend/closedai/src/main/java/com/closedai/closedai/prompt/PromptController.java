@@ -10,14 +10,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.closedai.closedai.redisqueue.RedisQueueService;
+
 @RestController
 @RequestMapping("/prompt")
 public class PromptController {
 
     private final PromptService service;
+    private final RedisQueueService redisQueueService;
 
-    public PromptController(PromptService service) {
+    public PromptController(PromptService service, RedisQueueService redisQueueService) {
         this.service = service;
+        this.redisQueueService = redisQueueService;
     }
 
     @PostMapping
@@ -38,5 +42,16 @@ public class PromptController {
     @DeleteMapping("/{id}")
     public void deletePrompt(@PathVariable String id) {
         service.deletePrompt(id);
+    }
+
+    @PostMapping("/queue")
+    public String queuePrompt(@RequestBody Prompt prompt) {
+        redisQueueService.pushPrompt(prompt.getId(), prompt.getContent());
+        return "Prompt queued";
+    }
+
+    @GetMapping("/response/{id}")
+    public String getPromptResponse(@PathVariable String id) {
+        return redisQueueService.getResponse(id);
     }
 }
