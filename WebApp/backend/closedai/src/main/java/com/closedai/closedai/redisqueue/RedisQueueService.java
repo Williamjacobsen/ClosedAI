@@ -19,6 +19,11 @@ public class RedisQueueService {
         this.objectMapper = new ObjectMapper();
     }
 
+    public String generateNextId() {
+        Long nextId = redisTemplate.opsForValue().increment("prompt:id:counter");
+        return String.valueOf(nextId);
+    }
+
     public void pushPrompt(String id, String content) {
         try {
             Map<String, String> data = Map.of("id", id, "content", content);

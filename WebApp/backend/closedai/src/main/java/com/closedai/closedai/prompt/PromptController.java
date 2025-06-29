@@ -46,8 +46,16 @@ public class PromptController {
 
     @PostMapping("/queue")
     public String queuePrompt(@RequestBody Prompt prompt) {
-        redisQueueService.pushPrompt(prompt.getId(), prompt.getContent());
-        return "Prompt queued";
+        String id = redisQueueService.generateNextId();
+        prompt.setId(id);
+
+        System.out.println("prompt: " + prompt.getContent());
+
+        service.savePrompt(prompt);
+
+        redisQueueService.pushPrompt(id, prompt.getContent());
+
+        return "Prompt queued with ID: " + id;
     }
 
     @GetMapping("/response/{id}")
