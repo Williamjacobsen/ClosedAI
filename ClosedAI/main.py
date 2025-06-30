@@ -30,12 +30,37 @@ def get_all_responses(scraper: Scraper):
 
     return
 
+def wait_for_response(scraper, xpath, timeout=300, check_interval=2):
+    start_time = time.time()
+    last_text = ""
+    stable_count = 0
+
+    while time.time() - start_time < timeout:
+        current_text = scraper.GetText(xpath)
+
+        if current_text == "":
+            continue
+
+        if current_text == last_text:
+            stable_count += 1
+        else:
+            stable_count = 0
+            last_text = current_text
+
+        if stable_count >= 2:
+            break
+
+        time.sleep(check_interval)
+
+    return last_text
+
 def get_response(scraper: Scraper):
     # /html/body/div[1]/div/div[1]/div[2]/main/div/div/div[1]/div/div/div[2]/article[last()]
+    # /html/body/div[1]/div/div[1]/div[2]/main/div/div/div[1]/div/div/div[2]/article[last()]/div/div/div/div/div[1]
 
-    
+    response = wait_for_response(scraper, "/html/body/div[1]/div/div[1]/div[2]/main/div/div/div[1]/div/div/div[2]/article[last()]/div/div/div/div/div[1]")
 
-    return
+    return response
 
 if __name__ == '__main__':
     scraper = Scraper()

@@ -17,12 +17,16 @@ def RedisListener(scraper, send_prompt, get_response):
 
         send_prompt(scraper=scraper, prompt=content)
 
-        get_response(scraper=scraper)
+        response = get_response(scraper=scraper)
+        print("response:")
+        print(response)
+        print("prompt:")
+        print(prompt)
 
         response_text = f"Python response to: {content}"
 
         # Store response
-        r.set(f"response:{prompt_id}", response_text)
+        r.set(f"response:{prompt_id}", response)
         print(f"Response stored at response:{prompt_id}")
 
 if __name__ == '__main__':
