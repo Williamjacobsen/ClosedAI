@@ -1,4 +1,4 @@
-def RedisListener(scraper, send_prompt):
+def RedisListener(scraper, send_prompt, get_response):
     import redis
     import json
 
@@ -15,8 +15,9 @@ def RedisListener(scraper, send_prompt):
 
         print(f"Received prompt: {content}")
 
-        res = send_prompt(scraper=scraper, prompt=content)
-        print(f"res: {res}")
+        send_prompt(scraper=scraper, prompt=content)
+
+        get_response(scraper=scraper)
 
         response_text = f"Python response to: {content}"
 

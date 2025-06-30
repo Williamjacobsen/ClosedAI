@@ -19,6 +19,25 @@ function App() {
 
   const handleSubmit = async () => {
     try {
+      if (prompts.length) {
+        setPrompts([
+          ...prompts,
+          {
+            id: prompts[prompts.length - 1].id + 1,
+            value: inputText,
+            type: "prompt",
+          },
+        ]);
+      } else {
+        setPrompts([
+          {
+            id: 1,
+            value: inputText,
+            type: "prompt",
+          },
+        ]);
+      }
+
       const response = await axios.post(
         "http://localhost:8080/prompt/queue",
         {
@@ -36,6 +55,7 @@ function App() {
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error sending POST request:", error);
+      setPrompts(prompts.slice(0, -1));
     }
   };
 
