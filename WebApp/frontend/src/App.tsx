@@ -107,6 +107,7 @@ function App() {
       </h4>
 
       {/* Response Area */}
+      {/* TODO: https://github.com/cure53/DOMPurify */}
       <div className="flex-1 overflow-y-auto px-4">
         <div className="max-w-2xl mx-auto space-y-4 pt-4">
           {prompts.map((prompt: any, idx: number) => (
@@ -115,7 +116,12 @@ function App() {
               className="bg-white p-4 rounded shadow whitespace-pre-wrap"
             >
               {prompt.type === "prompt" ? "Prompt:\n" : "Response:\n"}
-              {prompt.value}
+              <div className="overflow-x-auto">
+                <div
+                  className="whitespace-pre-wrap rendered-html"
+                  dangerouslySetInnerHTML={{ __html: prompt.value }}
+                />
+              </div>
             </div>
           ))}
         </div>

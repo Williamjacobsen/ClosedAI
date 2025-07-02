@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+.rendered-html table {
+  border-collapse: collapse;
+}
+
+.rendered-html td,
+.rendered-html th {
+  padding: 12px 24px; /* <-- more horizontal spacing */
+}

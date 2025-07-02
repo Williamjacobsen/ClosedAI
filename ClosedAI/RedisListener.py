@@ -4,7 +4,7 @@ def RedisListener(scraper, send_prompt, get_response):
 
     r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
-    print("Python bot is listening for prompts...")
+    print("Listening for prompts...")
 
     while True:
         _, data = r.brpop("prompt_queue")
@@ -18,16 +18,15 @@ def RedisListener(scraper, send_prompt, get_response):
         send_prompt(scraper=scraper, prompt=content)
 
         response = get_response(scraper=scraper)
+        
         print("response:")
         print(response)
         print("prompt:")
         print(prompt)
-
-        response_text = f"Python response to: {content}"
 
         # Store response
         r.set(f"response:{prompt_id}", response)
         print(f"Response stored at response:{prompt_id}")
 
 if __name__ == '__main__':
-    RedisListener(lambda: "test")
+    RedisListener(lambda: "test1", lambda: "test2")
