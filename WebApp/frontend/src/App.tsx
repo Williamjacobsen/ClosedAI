@@ -3,11 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 function App() {
+  const divScrollDownRef = useRef<null | HTMLDivElement>(null);
+
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputText, setInputText] = useState("");
   const [prompts, setPrompts] = useState<
     { id: number; value: any; type: string }[]
   >([]);
+
+  useEffect(() => {
+    if (divScrollDownRef.current) {
+      divScrollDownRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [prompts]);
 
   const handleInput = () => {
     const textarea = textareaRef.current;
@@ -106,7 +114,7 @@ function App() {
         Closed AI - Model C4
       </h4>
 
-      {/* Response Area */}
+      {/* Response / Prompt History Area */}
       {/* TODO: https://github.com/cure53/DOMPurify */}
       <div className="flex-1 overflow-y-auto px-4">
         <div className="max-w-2xl mx-auto space-y-4 pt-4">
@@ -125,6 +133,8 @@ function App() {
             </div>
           ))}
         </div>
+
+        <div ref={divScrollDownRef} />
       </div>
 
       {/* Prompt */}
