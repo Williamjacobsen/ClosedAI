@@ -7,6 +7,7 @@ def RedisListener(scraper, send_prompt, get_response):
     print("Listening for prompts...")
 
     while True:
+        # Further development: r.brpop(["prompt_queue:user1", "prompt_queue:user2", ...])
         _, data = r.brpop("prompt_queue")
         prompt = json.loads(data)
 
@@ -18,11 +19,6 @@ def RedisListener(scraper, send_prompt, get_response):
         send_prompt(scraper=scraper, prompt=content)
 
         response = get_response(scraper=scraper)
-        
-        print("response:")
-        print(response)
-        print("prompt:")
-        print(prompt)
 
         # Store response
         r.set(f"response:{prompt_id}", response)

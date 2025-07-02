@@ -1,22 +1,52 @@
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
 
 function App() {
-  const divScrollDownRef = useRef<null | HTMLDivElement>(null);
+  /* Handle response status messages */
+  const [responseStatus, setResponseStatus] = useState<string[]>([]);
+  useEffect(() => {
+    const socket = io("http://localhost:5000", {
+      transports: ["polling"],
+    });
 
+    socket.on("connect", () => {
+      console.log("Front-end socket ID:", socket.id);
+      console.log("Connected to server...");
+    });
+
+    socket.on("status", (data: string) => {
+      setResponseStatus((prev) => [...prev, data]);
+      console.log("Received status:", data);
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("WebSocket connection failed, retrying...", err.message);
+      setTimeout(() => socket.connect(), 1000);
+    });
+
+    return () => {
+      socket.disconnect(); // Clean up on unmount
+    };
+  }, []);
+
+  /* States */
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputText, setInputText] = useState("");
   const [prompts, setPrompts] = useState<
     { id: number; value: any; type: string }[]
   >([]);
 
+  /* Automatically scroll down */
+  const divScrollDownRef = useRef<null | HTMLDivElement>(null);
   useEffect(() => {
     if (divScrollDownRef.current) {
       divScrollDownRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [prompts]);
 
+  /** Handle prompt input scaling */
   const handleInput = () => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -25,6 +55,7 @@ function App() {
     }
   };
 
+  /** Send input prompt & instantly show input prompt when send */
   const handleSubmit = async () => {
     try {
       if (prompts.length) {
@@ -67,6 +98,7 @@ function App() {
     }
   };
 
+  /** Get all prompts and responses / chat history */
   useEffect(() => {
     const getAllPrompts = async () => {
       try {
