@@ -1,36 +1,9 @@
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
+import { BallTriangle } from "react-loading-icons";
 
 function App() {
-  /* Handle response status messages */
-  const [responseStatus, setResponseStatus] = useState<string[]>([]);
-  useEffect(() => {
-    const socket = io("http://localhost:5000", {
-      transports: ["polling"],
-    });
-
-    socket.on("connect", () => {
-      console.log("Front-end socket ID:", socket.id);
-      console.log("Connected to server...");
-    });
-
-    socket.on("status", (data: string) => {
-      setResponseStatus((prev) => [...prev, data]);
-      console.log("Received status:", data);
-    });
-
-    socket.on("connect_error", (err) => {
-      console.error("WebSocket connection failed, retrying...", err.message);
-      setTimeout(() => socket.connect(), 1000);
-    });
-
-    return () => {
-      socket.disconnect(); // Clean up on unmount
-    };
-  }, []);
-
   /* States */
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputText, setInputText] = useState("");
@@ -164,6 +137,9 @@ function App() {
               </div>
             </div>
           ))}
+          {prompts[prompts.length - 1]?.type == "prompt" && (
+            <BallTriangle fill="#000000" width={50} height={50} />
+          )}
         </div>
 
         <div ref={divScrollDownRef} />
