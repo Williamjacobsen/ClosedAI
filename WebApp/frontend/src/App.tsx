@@ -137,7 +137,7 @@ function App() {
               </div>
             </div>
           ))}
-          {prompts[prompts.length - 1]?.type == "prompt" && (
+          {prompts[prompts.length - 1]?.type == "prompt" && ( // // TODO: Only show loading when response to prompt being send was successful
             <BallTriangle fill="#000000" width={50} height={50} />
           )}
         </div>

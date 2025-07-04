@@ -24,10 +24,5 @@ def RedisListener(scraper, send_prompt, get_response):
         r.set(f"response:{prompt_id}", response)
         print(f"Response stored at response:{prompt_id}")
 
-        r.publish(
-            "prompt_response_channel",
-            json.dumps({"id": prompt_id})
-        )
-
 if __name__ == '__main__':
     RedisListener(lambda: "test1", lambda: "test2")
