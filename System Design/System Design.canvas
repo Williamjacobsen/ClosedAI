@@ -5,6 +5,10 @@
 		{"id":"8ef0bafc9bb84581","type":"group","x":-440,"y":-440,"width":1800,"height":760,"label":"REST API"},
 		{"id":"918bfb8227ffe13f","type":"group","x":-1640,"y":-440,"width":1060,"height":1160,"label":"Client"},
 		{"id":"59efff48b8d9e9bd","type":"group","x":-440,"y":1360,"width":1800,"height":480,"label":"Data Storage"},
+		{"id":"29c2b0ca6c88febd","type":"group","x":-1110,"y":400,"width":320,"height":300,"label":"Getting Prompt Response"},
+		{"id":"0c8591ed46416494","type":"group","x":-1252,"y":50,"width":285,"height":290,"label":"New Chat Session"},
+		{"id":"c723a22ecc459210","type":"group","x":-920,"y":40,"width":280,"height":200,"label":"Existing Chat Session"},
+		{"id":"cc13c3a77f937774","type":"group","x":-1580,"y":40,"width":280,"height":200,"label":"Account"},
 		{"id":"4eaa344b7a8ed01d","type":"file","file":"client.png","x":-1238,"y":-360,"width":136,"height":136,"color":"4"},
 		{"id":"069ba0069a1306ae","type":"text","text":"Frontend - React + Vite","x":-1235,"y":-224,"width":250,"height":60,"color":"4"},
 		{"id":"1837835577f8ec4d","type":"file","file":"react.png","x":-1102,"y":-360,"width":117,"height":136,"color":"4"},
@@ -23,9 +27,6 @@
 		{"id":"db4a1d23a44dd61e","type":"file","file":"microservice.png","x":-90,"y":460,"width":136,"height":136,"color":"6"},
 		{"id":"dcf6161602b742d7","type":"text","text":"Grab User Identification data","x":-1252,"y":-110,"width":285,"height":60,"color":"4"},
 		{"id":"4033413aef8f7fa4","type":"text","text":"Send a Prompt","x":-1235,"y":160,"width":250,"height":60,"color":"4"},
-		{"id":"2b7e50dda6e53fd1","type":"text","text":"path: /response/longpolling","x":-1102,"y":600,"width":285,"height":60,"color":"1"},
-		{"id":"eb2a354affb9d72f","type":"text","text":"path: /prompt/queue","x":-1097,"y":400,"width":275,"height":60,"color":"1"},
-		{"id":"ecb615376d81f8c1","type":"text","text":"Long Polling for Response ","x":-1085,"y":500,"width":250,"height":60,"color":"4"},
 		{"id":"1538f713ffac2518","type":"text","text":"path: /account\nAccount","x":-1560,"y":60,"width":250,"height":60,"color":"4"},
 		{"id":"435a960a5b4be5dc","type":"text","text":"path: /account\nServer: CRUD Account","x":-1560,"y":160,"width":250,"height":60,"color":"1"},
 		{"id":"9762b300573ee62e","type":"text","text":"path: /chat\nServer: Create Chat Session","x":-1240,"y":260,"width":260,"height":60,"color":"1"},
@@ -51,15 +52,16 @@
 		{"id":"de0221f37d38d40f","type":"text","text":"Chat Session History","x":521,"y":1700,"width":229,"height":50,"color":"#0000be"},
 		{"id":"61a5ba9d574adc0b","type":"file","file":"mysql.png","x":432,"y":1410,"width":133,"height":133,"color":"#0000be"},
 		{"id":"3e348f56feabf974","type":"file","file":"redis.png","x":-200,"y":1400,"width":155,"height":138,"color":"5"},
-		{"id":"86b71be92a4fd653","type":"file","file":"json.png","x":987,"y":1404,"width":131,"height":131,"color":"#ffffff"}
+		{"id":"86b71be92a4fd653","type":"file","file":"json.png","x":987,"y":1404,"width":131,"height":131,"color":"#ffffff"},
+		{"id":"eb2a354affb9d72f","type":"text","text":"path: /prompt/queue","x":-1087,"y":420,"width":275,"height":60,"color":"1"},
+		{"id":"ecb615376d81f8c1","type":"text","text":"Long Polling for Response ","x":-1075,"y":520,"width":250,"height":60,"color":"4"},
+		{"id":"2b7e50dda6e53fd1","type":"text","text":"path: /response/longpolling","x":-1092,"y":620,"width":285,"height":60,"color":"1"}
 	],
 	"edges":[
 		{"id":"8c1693f940254d0f","fromNode":"8f86d2e252b36ee7","fromSide":"bottom","toNode":"4033413aef8f7fa4","toSide":"top"},
 		{"id":"1afa0fb52b419f27","fromNode":"2bc1c4bf6c3f5380","fromSide":"bottom","toNode":"05fadf2820d2fe3b","toSide":"top"},
 		{"id":"5d664d7b7ec9bd5f","fromNode":"4033413aef8f7fa4","fromSide":"bottom","toNode":"9762b300573ee62e","toSide":"top"},
-		{"id":"c1d140af5abb6ea2","fromNode":"9762b300573ee62e","fromSide":"bottom","toNode":"eb2a354affb9d72f","toSide":"top"},
 		{"id":"cd42abbe332180b3","fromNode":"d3fe20ccad38ee04","fromSide":"bottom","toNode":"9e1f337f13f90540","toSide":"top"},
-		{"id":"4a7dd0806aace133","fromNode":"9e1f337f13f90540","fromSide":"bottom","toNode":"eb2a354affb9d72f","toSide":"top"},
 		{"id":"b49929947f2c4114","fromNode":"2bc1c4bf6c3f5380","fromSide":"bottom","toNode":"ebbe06e70688fac8","toSide":"top"},
 		{"id":"1006f11a607d46b7","fromNode":"eb2a354affb9d72f","fromSide":"bottom","toNode":"ecb615376d81f8c1","toSide":"top"},
 		{"id":"72edb9718b94e17d","fromNode":"ecb615376d81f8c1","fromSide":"bottom","toNode":"2b7e50dda6e53fd1","toSide":"top"},
@@ -79,11 +81,13 @@
 		{"id":"e84ae80bf5d32209","fromNode":"3c30058244d93ad8","fromSide":"bottom","toNode":"de0221f37d38d40f","toSide":"top"},
 		{"id":"78dd5d48e1fbc9ab","fromNode":"f31437765dad0a22","fromSide":"bottom","toNode":"b623c2bbab7fec4d","toSide":"top"},
 		{"id":"cc12069122ab2cab","fromNode":"069ba0069a1306ae","fromSide":"bottom","toNode":"dcf6161602b742d7","toSide":"top"},
-		{"id":"4d45db80af4a38e4","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"1538f713ffac2518","toSide":"top"},
-		{"id":"caaf6493c5cd65e5","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"8f86d2e252b36ee7","toSide":"top"},
-		{"id":"e08f6ba398461330","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"d3fe20ccad38ee04","toSide":"top"},
 		{"id":"65236304310d8fab","fromNode":"dcf6161602b742d7","fromSide":"right","toNode":"c3b856f4f2e5888a","toSide":"left"},
 		{"id":"55ec0e2e355cc91f","fromNode":"2bc1c4bf6c3f5380","fromSide":"bottom","toNode":"2b617885dc62d196","toSide":"top"},
-		{"id":"4ea266baf4631a27","fromNode":"2b617885dc62d196","fromSide":"bottom","toNode":"7af2b80a42708c13","toSide":"top"}
+		{"id":"4ea266baf4631a27","fromNode":"2b617885dc62d196","fromSide":"bottom","toNode":"7af2b80a42708c13","toSide":"top"},
+		{"id":"7bf7c44fceda2476","fromNode":"c723a22ecc459210","fromSide":"bottom","toNode":"29c2b0ca6c88febd","toSide":"top"},
+		{"id":"05885b3b73a5339b","fromNode":"0c8591ed46416494","fromSide":"bottom","toNode":"29c2b0ca6c88febd","toSide":"top"},
+		{"id":"7de09d3e49b9f952","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"c723a22ecc459210","toSide":"top"},
+		{"id":"6b158adae3df1008","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"0c8591ed46416494","toSide":"top"},
+		{"id":"309dcac293a09810","fromNode":"dcf6161602b742d7","fromSide":"bottom","toNode":"cc13c3a77f937774","toSide":"top"}
 	]
 }
