@@ -15,9 +15,9 @@
               "state": {
                 "file": "System Design.canvas",
                 "viewState": {
-                  "x": -913.5879529206683,
-                  "y": 231.92932726509906,
-                  "zoom": -0.3333333333333332
+                  "x": 294.4768795655472,
+                  "y": 745.2549676980652,
+                  "zoom": -0.9999999999999998
                 }
               },
               "icon": "lucide-layout-dashboard",
@@ -173,18 +173,17 @@
   },
   "active": "03143c92b26c2c45",
   "lastOpenFiles": [
+    "System Design.canvas",
+    "webcrawler.png",
     "json.png",
     "mysql.png",
     "Pasted image 20250707162628.png",
     "redis.png",
     "react.png",
     "Pasted image 20250707155829.png",
-    "System Design.canvas",
     "Java.png",
     "python.png",
     "Pasted image 20250707155345.png",
-    "microservice.png",
-    "Pasted image 20250707155526.png",
     "Welcome.md"
   ]
 }
