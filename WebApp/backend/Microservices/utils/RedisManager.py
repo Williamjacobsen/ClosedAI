@@ -6,7 +6,7 @@ class RedisManager:
         self.redis_client = redis.Redis(host='localhost', port=6379, decode_responses=True)
         self.pubsub = self.redis_client.pubsub()
 
-    def redis_subscriber(self, *channels, callback):
+    def redis_subscriber(self, *channels, callback=None):
         try:
             if not channels:
                 raise ValueError("At least one channel must be provided")
@@ -18,15 +18,15 @@ class RedisManager:
                 if message['type'] == 'message':
                     try:
                         data = json.loads(message['data'])
-                        prompt_id = data.get('id')
-                        prompt_text = data.get('prompt')
+                        key = data.get('key')
+                        value = data.get('value')
 
                         print(f"Received on {message['channel']}:")
-                        print(f"   ID    : {prompt_id}")
-                        print(f"   Prompt: {prompt_text}")
+                        print(f"   Key    : {key}")
+                        print(f"   Value: {value}")
 
                         if callback:
-                            callback(prompt_id, prompt_text)
+                            callback(key, value)
 
                     except json.JSONDecodeError:
                         print("Received non-JSON message:", message['data'])

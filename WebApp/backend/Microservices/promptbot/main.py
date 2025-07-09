@@ -5,17 +5,25 @@ from utils.RedisManager import RedisManager
 import promptbot
 import threading
 
-def GetResponseNoneBlocking(prompt_id):
+redis_client = RedisManager()
+
+def ReturnResponse(prompt_id, response):
+    redis_client.redis_publisher("response_channel", {
+        "key": prompt_id,
+        "value": response
+    })
+
+def GetResponse(prompt_id):
     response = promptbot.get_response(scraper=scraper) # Blocks thread until response received
     print(f"[RedisSubscriber] Response for ID {prompt_id}:\n{response}")
+    ReturnResponse(prompt_id, response)
 
 def RedisSubscriber(scraper):
-    redis_client = RedisManager()
 
     def handle_message(prompt_id, prompt_text):
         print(f"[RedisSubscriber] Callback for ID={prompt_id}: {prompt_text}")
         promptbot.send_prompt(scraper=scraper, prompt=prompt_text)
-        threading.Thread(target=GetResponseNoneBlocking, args=(prompt_id,), daemon=True).start()
+        GetResponse(prompt_id)
 
     redis_client.redis_subscriber("prompt_channel", callback=handle_message)
 
