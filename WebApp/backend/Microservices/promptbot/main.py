@@ -1,0 +1,25 @@
+import sys
+sys.path.append('../')
+
+from utils.RedisManager import RedisManager
+import promptbot
+import threading
+
+def GetResponseNoneBlocking(prompt_id):
+    response = promptbot.get_response(scraper=scraper) # Blocks thread until response received
+    print(f"[RedisSubscriber] Response for ID {prompt_id}:\n{response}")
+
+def RedisSubscriber(scraper):
+    redis_client = RedisManager()
+
+    def handle_message(prompt_id, prompt_text):
+        print(f"[RedisSubscriber] Callback for ID={prompt_id}: {prompt_text}")
+        promptbot.send_prompt(scraper=scraper, prompt=prompt_text)
+        threading.Thread(target=GetResponseNoneBlocking, args=(prompt_id,), daemon=True).start()
+
+    redis_client.redis_subscriber("prompt_channel", callback=handle_message)
+
+if __name__ == '__main__':
+    scraper = promptbot.run()
+
+    RedisSubscriber(scraper=scraper)

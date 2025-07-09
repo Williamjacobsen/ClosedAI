@@ -1,5 +1,7 @@
-from Scraper import Scraper
-from RedisListener import RedisListener
+import sys
+sys.path.append('../')
+
+from utils.Scraper import Scraper
 import time
 
 def start_bot(scraper: Scraper):
@@ -71,10 +73,7 @@ def get_response(scraper: Scraper):
 def run():
     scraper = Scraper()
     start_bot(scraper)
-
-    RedisListener(scraper=scraper, send_prompt=send_prompt, get_response=get_response)
-
-    time.sleep(600)
+    return scraper
 
 if __name__ == '__main__':
     run()
