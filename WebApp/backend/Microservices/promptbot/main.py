@@ -19,7 +19,7 @@ def GetResponse(prompt_id):
 
 def RedisSubscriber(scraper):
 
-    def handle_message(prompt_id, prompt_text):
+    def handle_message(prompt_id, prompt_text, channel=None):
         print(f"[RedisSubscriber] Callback for ID={prompt_id}: {prompt_text}")
         promptbot.send_prompt(scraper=scraper, prompt=prompt_text)
         GetResponse(prompt_id)
