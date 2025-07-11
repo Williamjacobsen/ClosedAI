@@ -4,6 +4,10 @@ sys.path.append('../')
 from utils.Scraper import Scraper
 import time
 
+def check_log_in_success(): # TODO
+    # /html/body/div[4]/div/div/div/div/div/p[1] = "Welcome back"
+    pass
+
 def start_bot(scraper: Scraper):
     scraper.OpenPage('https://chatgpt.com/')
     scraper.LoadCookies()
@@ -13,7 +17,13 @@ def send_prompt(scraper: Scraper, prompt: str):
     print("Prompt:")
     print(prompt)
     
-    xpath = "/html/body/div[1]/div/div[1]/div[2]/main/div/div/div[2]/div[1]/div/div/div[2]/form/div[1]/div/div[1]/div[1]/div[2]/div/div/div/div/div/p"
+    # TODO: XPath may change, add a function in Scraper.py for finding an element by text.
+    # From:
+    #        /html/body/div[1]/div/div[1]/div[2]/main/div/div/div[2]/div[1]/div/div/div[2]/form/div[1]/div/div[1]/div[1]/div[2]/div/div/div/div/div/p
+    # To:
+    #        /html/body/div[1]/div/div[1]/div[2]/main/div/div/div[2]/div[1]/div/div/div[2]/form/div[2]/div/div[1]/div[1]/div[2]/div/div/div/div/div/p
+    
+    xpath = "/html/body/div[1]/div/div[1]/div[2]/main/div/div/div[2]/div[1]/div/div/div[2]/form/div[2]/div/div[1]/div[1]/div[2]/div/div/div/div/div/p"
 
     lines = prompt.splitlines()
     for idx, line in enumerate(lines):
