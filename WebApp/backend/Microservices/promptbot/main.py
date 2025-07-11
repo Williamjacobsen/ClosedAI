@@ -3,7 +3,6 @@ sys.path.append('../')
 
 from utils.RedisManager import RedisManager
 import promptbot
-import threading
 
 redis_client = RedisManager()
 

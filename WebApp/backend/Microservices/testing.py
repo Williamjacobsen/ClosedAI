@@ -6,7 +6,6 @@ client = RedisManager()
 
 def pub_prompt():
     client.redis_publisher("prompt_channel", {"key": "testid", "value": "testprompt"})
-    time.sleep(10)
 
 def sub_prompt():
     client.redis_subscriber("prompt_channel")
@@ -19,5 +18,6 @@ if __name__ == '__main__':
     threading.Thread(target=sub_response, daemon=True).start()
 
     while True:
+        time.sleep(0.1)
         input("Send:")
         pub_prompt()
