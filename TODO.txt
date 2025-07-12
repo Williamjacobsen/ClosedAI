@@ -1,0 +1,46 @@
+RedisManager.py
+    Add option for logging (with logging levels)
+
+Scraper.py
+    Find element and xpath by text inside element
+
+MySQLLogger.py & MySQL
+        Should store 'type' not 'channel'
+    And:
+        Rename table to 'chat_history'
+    And:
+        Remove 'key' column
+
+promptbot.py
+    Handle error:
+        Received on prompt_channel:
+        Key    : None
+        Value  : None
+        [RedisSubscriber] Callback for ID=prompt_channel: None
+        Prompt:
+        None
+        Error subscribing to prompt_channel: 'NoneType' object has no attribute 'splitlines'
+        Exception ignored in: <function Chrome.__del__ at 0x000001B32A2A6480>
+        Traceback (most recent call last):
+          File "C:\Users\villi\AppData\Roaming\Python\Python313\site-packages\undetected_chromedriver\__init__.py", line 843, in __del__
+          File "C:\Users\villi\AppData\Roaming\Python\Python313\site-packages\undetected_chromedriver\__init__.py", line 798, in quit
+        OSError: [WinError 6] The handle is invalid
+    And:
+        if wait_for_response_to_finish is ""
+        then it throws an unhandled error and crashes the script
+    And:
+        Make it search for the xpath or element for input field (Scraper.py todo)
+    And:
+        Handle cookies expiring
+
+Full stack:
+    If the backend or a microservice is down, let the user know
+
+App.tsx:
+        Split it up into multiple files
+    And:
+        No need to send id, sort using timestamps
+    And:
+        Use: https://github.com/cure53/DOMPurify
+    And:
+        Only show loading when response to prompt being send was successful otherwise show an error

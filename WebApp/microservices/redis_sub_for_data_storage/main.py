@@ -12,7 +12,7 @@ def on_response(channel, key, value):
     print(f"Message on [{channel}]:")
     print(f"Key    : {key}")
     print(f"Value  : {value}")
-    mysql_logger.insert_message(channel, key, value)
+    mysql_logger.insert_message(channel.removesuffix('_channel'), key, value)
 
 if __name__ == '__main__':
     try:

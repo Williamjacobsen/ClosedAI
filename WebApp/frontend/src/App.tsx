@@ -1,3 +1,5 @@
+/* TODO: If the backend or a microservice is down, let the user know */
+
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -140,7 +142,7 @@ function App() {
               </div>
             </div>
           ))}
-          {prompts[prompts.length - 1]?.type == "prompt" && ( // // TODO: Only show loading when response to prompt being send was successful
+          {prompts[prompts.length - 1]?.type == "prompt" && ( // TODO: Only show loading when response to prompt being send was successful
             <BallTriangle fill="#000000" width={50} height={50} />
           )}
         </div>
