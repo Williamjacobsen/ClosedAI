@@ -50,10 +50,13 @@ function App() {
         ]);
       }
 
+      console.log(`Sending prompt: ${inputText}`);
+
       const response = await axios.post(
-        "http://localhost:8080/prompt/queue",
+        "http://localhost:8080/prompt/send",
         {
-          content: inputText,
+          id: prompts.length ? prompts[prompts.length - 1].id + 1 : 1,
+          prompt: inputText,
         },
         {
           headers: {

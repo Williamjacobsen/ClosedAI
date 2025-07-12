@@ -25,6 +25,20 @@ def send_prompt(scraper: Scraper, prompt: str):
     
     xpath = "/html/body/div[1]/div/div[1]/div[2]/main/div/div/div[2]/div[1]/div/div/div[2]/form/div[2]/div/div[1]/div[1]/div[2]/div/div/div/div/div/p"
 
+    # TODO:
+    #Received on prompt_channel:
+    #Key    : None
+    #Value  : None
+    #[RedisSubscriber] Callback for ID=prompt_channel: None
+    #Prompt:
+    #None
+    #Error subscribing to prompt_channel: 'NoneType' object has no attribute 'splitlines'
+    #Exception ignored in: <function Chrome.__del__ at 0x000001B32A2A6480>
+    #Traceback (most recent call last):
+    #  File "C:\Users\villi\AppData\Roaming\Python\Python313\site-packages\undetected_chromedriver\__init__.py", line 843, in __del__
+    #  File "C:\Users\villi\AppData\Roaming\Python\Python313\site-packages\undetected_chromedriver\__init__.py", line 798, in quit
+    #OSError: [WinError 6] The handle is invalid
+
     lines = prompt.splitlines()
     for idx, line in enumerate(lines):
         if line:

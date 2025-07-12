@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/prompt")
 public class PromptPublisherController {
 
     @Autowired
