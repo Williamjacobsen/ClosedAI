@@ -14,6 +14,7 @@ public class SseEmitterService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     /** create a new emitter and register life-cycle callbacks */
+    @SuppressWarnings("unused")
     public SseEmitter create() {
         // 30-minute timeout; tweak as you like
         SseEmitter emitter = new SseEmitter(30 * 60 * 1_000L);
