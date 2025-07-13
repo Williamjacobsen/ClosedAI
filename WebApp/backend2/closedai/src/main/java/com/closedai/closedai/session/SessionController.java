@@ -1,14 +1,15 @@
 package com.closedai.closedai.session;
 
+import java.time.Duration;
+import java.util.UUID;
+
+import org.springframework.http.ResponseCookie;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 
-/**
- * Returns the current HTTP-session id.
- * If the client has no session cookie yet, Spring creates one automatically.
- */
 @RestController
 public class SessionController {
 
@@ -17,43 +18,34 @@ public class SessionController {
     public SessionController(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
-    
+
     @GetMapping("/session")
-    public SessionResponseDTO getOrCreateSession(HttpSession httpSession) {
-
-        String sid = httpSession.getId();
-
-        // --- Database ---
-        // Check if session exists in database,
-        // if not, save session
-
-        // Get session
-        SessionEntity entity = sessionRepository.findBySessionId(sid);
+    public SessionResponseDTO getOrCreateSession(
+        @CookieValue(value="SESSION_ID", required=false) String cookieSessionId,
+        HttpServletResponse response
+    ) {
         
-        // Does session exist
-        if (entity == null) {
-            
-            // If session does not exist, then create a new session with our sid
-            entity = new SessionEntity(sid);
-
-            // Save session to database
-            sessionRepository.save(entity);
-
+        if (cookieSessionId != null)
+        {
+            SessionEntity session = sessionRepository.findBySessionId(cookieSessionId);
+            if (session != null) {
+                return new SessionResponseDTO(session.getSessionId());
+            }
         }
 
-        // Log => SessionEntity{ id = 2, sessionId = 27D876A1829CA871D47E155E49945448, createdAt = 2025-07-13T18:11:17.322112900 }
-        System.out.println(entity.toString());
+        String newSessionId = UUID.randomUUID().toString();
+        SessionEntity sessionEntity = new SessionEntity(newSessionId);
+        sessionRepository.save(sessionEntity);
 
-        // --- Format Return & Logging ---
-        SessionResponseDTO sessionResponseDTO = new SessionResponseDTO(entity.getSessionId());
-        // sessionResponseDTO => {"sessionId":"4CEF7FAB6761D0177D12741CCD3DC6A8"}
+        ResponseCookie cookie = ResponseCookie.from("SESSION_ID", newSessionId)
+            .httpOnly(true)
+            .secure(true)
+            .path("/")
+            .maxAge(Duration.ofDays(3650))
+            .build();
+        response.addHeader("Set-Cookie", cookie.toString());
 
-        System.out.println(sessionResponseDTO.toString());
-        // Log => SessionResponseDTO{ sessionId = 4CEF7FAB6761D0177D12741CCD3DC6A8 }
-
-        return sessionResponseDTO;
-        // Response => {"sessionId":"4CEF7FAB6761D0177D12741CCD3DC6A8"}
-    
+        return new SessionResponseDTO(newSessionId);
     }
-    
+
 }

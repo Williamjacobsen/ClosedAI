@@ -7,7 +7,7 @@ public class SessionResponseDTO {
     private String sessionId;
 
     // --------- Constructors ---------
-    public SessionResponseDTO() { 
+    public SessionResponseDTO() { // DTO = Data Transfer Object
         // Public no-arg ctor required by Jackson for JSON → POJO deserialization
     }
 
