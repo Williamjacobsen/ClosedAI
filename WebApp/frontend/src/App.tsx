@@ -5,6 +5,55 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { BallTriangle } from "react-loading-icons";
 
+/**
+ * One row from the message_history table.
+ */
+export interface MessageHistory {
+  id: number;
+  channel: string;
+  key: string | null;
+  value: string | null;
+  receivedAt: string; // ISO-8601, parse with Date if you like
+}
+
+/**
+ * Spring Data's paging wrapper ⇢ Page<MessageHistory>
+ * The generics let you reuse it for any other entity later.
+ */
+export interface Page<T> {
+  content: T[];
+
+  // --- page "header" ---
+  pageable: Pageable;
+  totalElements: number;
+  totalPages: number;
+  number: number; // current page (0-based)
+  size: number; // page size
+  numberOfElements: number; // rows in this page
+
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+  sort: Sort;
+}
+
+/** Mirrors Spring's Pageable JSON */
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+  sort: Sort;
+}
+
+/** Mirrors Spring's Sort JSON */
+export interface Sort {
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
+}
+
 function App() {
   /* States */
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -80,35 +129,25 @@ function App() {
   useEffect(() => {
     const getAllPrompts = async () => {
       try {
-        const prompts = await axios.get("http://localhost:8080/prompt");
-        const responses = await axios.get(
-          "http://localhost:8080/prompt/response/all"
+        const { data } = await axios.get<Page<MessageHistory>>(
+          "http://localhost:8080/api/messages"
+          //{ params: { page: 0, size: 50, sort: "receivedAt,desc" } }
         );
 
-        let merged: any[] = [];
-        prompts.data.forEach((prompt: any) => {
-          merged.push({
-            id: prompt.id,
-            value: prompt.content,
-            type: "prompt",
-          });
+        console.log(data);
 
-          const response = responses.data[prompt.id];
-          if (response) {
-            merged.push({
-              id: prompt.id,
-              value: response,
-              type: "response",
-            });
-          }
-        });
+        /** Map each DB row → UI prompt/response block */
+        const mapped = data.content.map((row) => ({
+          id: row.id,
+          value: row.value ?? "",
+          // TODO: Fix this & DB
+          type:
+            row.channel === "prompt" || row.channel === "prompt_channel"
+              ? "prompt"
+              : "response",
+        }));
 
-        console.log(merged);
-
-        setPrompts(merged);
-
-        console.log("prompts:", prompts.data);
-        console.log("responses:", responses.data);
+        setPrompts(mapped);
       } catch (error) {
         console.error("Error sending POST request:", error);
       }
