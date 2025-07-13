@@ -6,6 +6,64 @@ import axios from "axios";
 import { BallTriangle } from "react-loading-icons";
 
 /**
+ * Hook up to the Spring-Boot SSE endpoint and
+ * push every incoming JSON payload into the UI timeline.
+ *
+ * - Expects the backend to publish events with name "response"
+ *   and a body shaped like { id, value, … }  (same as your DB rows).
+ * - Shows a banner if the SSE stream dies (e.g., backend down).
+ */
+export const useSseResponses = (
+  setPrompts: React.Dispatch<
+    React.SetStateAction<{ id: number; value: any; type: string }[]>
+  >
+) => {
+  const [sseDown, setSseDown] = useState(false);
+
+  useEffect(() => {
+    // ──────────────────────── open the stream
+    const src = new EventSource("http://localhost:8080/sse/responses", {
+      withCredentials: false,
+    });
+
+    // ──────────────────────── receive messages
+    const onResponse = (evt: MessageEvent) => {
+      try {
+        const payload = JSON.parse(evt.data) as {
+          id: number;
+          value: string;
+        };
+
+        setPrompts((prev) => [
+          ...prev,
+          { id: payload.id, value: payload.value, type: "response" },
+        ]);
+      } catch (err) {
+        console.error("Bad SSE payload:", evt.data);
+      }
+    };
+
+    src.addEventListener("response", onResponse);
+
+    // ──────────────────────── basic fault handling
+    src.onerror = () => {
+      // network hiccup → leave a note for the user
+      setSseDown(true);
+      // close so browser doesn't keep hammering the endpoint
+      src.close();
+    };
+
+    // ──────────────────────── cleanup on unmount
+    return () => {
+      src.removeEventListener("response", onResponse);
+      src.close();
+    };
+  }, [setPrompts]);
+
+  return { sseDown };
+};
+
+/**
  * One row from the message_history table.
  */
 export interface MessageHistory {
@@ -61,6 +119,7 @@ function App() {
   const [prompts, setPrompts] = useState<
     { id: number; value: any; type: string }[]
   >([]);
+  const { sseDown } = useSseResponses(setPrompts);
 
   /* Automatically scroll down */
   const divScrollDownRef = useRef<null | HTMLDivElement>(null);
@@ -82,11 +141,16 @@ function App() {
   /** Send input prompt & instantly show input prompt when send */
   const handleSubmit = async () => {
     try {
+      /* TODO: Fix id bug */
+
+      const lastId = Number(prompts.at(-1)?.id) || 0;
+      const nextId = lastId + 1;
+
       if (prompts.length) {
         setPrompts([
           ...prompts,
           {
-            id: prompts[prompts.length - 1].id + 1,
+            id: nextId,
             value: inputText,
             type: "prompt",
           },
@@ -101,12 +165,16 @@ function App() {
         ]);
       }
 
-      console.log(`Sending prompt: ${inputText}`);
+      console.log(`Sending post request:`);
+      console.log({
+        id: nextId,
+        prompt: inputText,
+      });
 
       const response = await axios.post(
         "http://localhost:8080/prompt/send",
         {
-          id: prompts.length ? prompts[prompts.length - 1].id + 1 : 1,
+          id: nextId,
           prompt: inputText,
         },
         {
@@ -158,6 +226,11 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
+      {sseDown && (
+        <div className="bg-red-500 text-white text-center py-2">
+          Real-time connection lost - trying again when you refresh.
+        </div>
+      )}
       {/* Title */}
       <h4 className="text-4xl font-semibold text-center text-gray-800 py-6">
         Closed AI - Model C4
