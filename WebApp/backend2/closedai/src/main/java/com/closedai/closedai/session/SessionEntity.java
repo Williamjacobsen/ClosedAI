@@ -1,5 +1,6 @@
 package com.closedai.closedai.session;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -27,6 +28,9 @@ public class SessionEntity {
     @Column(name = "created_at", updatable=false)
     private LocalDateTime createdAt;
 
+    @Column(name = "last_used")
+    private Timestamp lastUsed;
+
     // --------- Constructors ---------
 
     public SessionEntity() { }
@@ -45,13 +49,16 @@ public class SessionEntity {
 
     public LocalDateTime getCreatedAt() { return this.createdAt; }
 
+    public Timestamp getLastUsed() { return lastUsed; }
+    public void setLastUsed(Timestamp lastUsed) { this.lastUsed = lastUsed; }
+
     // --------- Custom Functions ---------
 
     @Override
     public String toString() {
         return String.format(
-            "SessionEntity{ id = %s, sessionId = %s, createdAt = %s }", 
-            this.id, this.sessionId, this.createdAt
+            "SessionEntity{ id = %s, sessionId = %s, createdAt = %s, lastUsed = %s }", 
+            this.id, this.sessionId, this.createdAt, this.lastUsed
         );
     }
 }

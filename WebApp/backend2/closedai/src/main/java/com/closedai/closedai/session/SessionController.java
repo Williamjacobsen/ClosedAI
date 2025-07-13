@@ -29,6 +29,8 @@ public class SessionController {
         {
             SessionEntity session = sessionRepository.findBySessionId(cookieSessionId);
             if (session != null) {
+                sessionRepository.updateLastActive(session.getSessionId());
+
                 return new SessionResponseDTO(session.getSessionId());
             }
         }
