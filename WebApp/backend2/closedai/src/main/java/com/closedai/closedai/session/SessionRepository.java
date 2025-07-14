@@ -11,9 +11,9 @@ public interface SessionRepository extends JpaRepository<SessionEntity, Long> { 
     
     SessionEntity findBySessionId(String sessionId);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE SessionEntity s SET s.lastUsed = CURRENT_TIMESTAMP WHERE s.sessionId = :sessionId")
-    void updateLastActive(@Param("sessionId") String sessionId);
+    @Modifying 
+    @Transactional 
+    @Query("UPDATE SessionEntity s SET s.lastUsed = CURRENT_TIMESTAMP WHERE s.sessionId = :sessionId") // JPQL query / Java Persistence Query Language
+    void updateLastActive(@Param("sessionId") String sessionId); // @Param("sessionId") annotation is used to bind the method parameter to the named parameter in the JPQL
 
 }
