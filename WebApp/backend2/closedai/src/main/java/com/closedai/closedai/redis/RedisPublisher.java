@@ -14,8 +14,18 @@ public class RedisPublisher {
         this.jedisPool = jedisPool;
     }
 
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
     public void publish(String channel, String message) {
         try (Jedis jedis = jedisPool.getResource()) {
+
+            if (isNullOrEmpty(message)) {
+                System.out.println("Channel or message is null. Publish aborted.");
+                return;
+            }
+
             jedis.publish(channel, message);
         }
     }

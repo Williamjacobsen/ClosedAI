@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.closedai.closedai.redis.RedisPublisher;
 import com.closedai.closedai.session.SessionService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,9 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 public class PromptController {
 
     private final SessionService sessionService;
+    private final RedisPublisher redisPublisher;
 
-    public PromptController(SessionService sessionService) {
+    public PromptController(
+        SessionService sessionService,
+        RedisPublisher redisPublisher
+    ) {
         this.sessionService = sessionService;
+        this.redisPublisher = redisPublisher;
     }
     
     @PostMapping("/send")
@@ -31,6 +37,8 @@ public class PromptController {
         String prompt = requestBody.getPrompt();
 
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
+
+        redisPublisher.publish("prompt_channel", prompt);
 
         return ResponseEntity.ok(String.format("Received prompt from session { session = %s, prompt = %s }", sessionId, prompt));
     }

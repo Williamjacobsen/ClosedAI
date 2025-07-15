@@ -1,6 +1,7 @@
 package com.closedai.closedai.chatsystem.prompt;
 
 public class PromptRequestDTO {
+    
     private String prompt;
 
     public String getPrompt() { return this.prompt; }
