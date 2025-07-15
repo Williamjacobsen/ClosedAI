@@ -28,5 +28,5 @@ public class SessionResponseDTO {
     public String toString() {
         return String.format("SessionResponseDTO{ sessionId = %s }", sessionId);
     }
-
+    
 }

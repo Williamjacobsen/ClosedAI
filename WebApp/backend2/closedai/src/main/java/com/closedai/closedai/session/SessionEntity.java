@@ -61,4 +61,5 @@ public class SessionEntity {
             this.id, this.sessionId, this.createdAt, this.lastUsed
         );
     }
+    
 }

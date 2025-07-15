@@ -49,5 +49,5 @@ public class SessionController {
 
         return new SessionResponseDTO(newSessionId);
     }
-
+    
 }

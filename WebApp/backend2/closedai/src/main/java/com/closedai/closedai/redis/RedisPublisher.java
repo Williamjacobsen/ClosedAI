@@ -1,24 +1,23 @@
 package com.closedai.closedai.redis;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @Component
 public class RedisPublisher {
 
-    private final Jedis jedis;
+    private final JedisPool jedisPool;
 
-    public RedisPublisher(
-        @Value("${spring.data.redis.host}") String redisHost,
-        @Value("${spring.data.redis.port}") int redisPort
-    ) {
-        this.jedis = new Jedis(redisHost, redisPort);
+    public RedisPublisher(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
     }
 
     public void publish(String channel, String message) {
-        jedis.publish(channel, message);
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.publish(channel, message);
+        }
     }
     
 }
