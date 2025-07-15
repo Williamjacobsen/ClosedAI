@@ -21,7 +21,7 @@ public class RedisConfig {
         } catch (Exception e) {
             throw new RuntimeException("Unable to connect to Redis at startup: " + e.getMessage(), e);
         }
-
+        
     }
 
     @Bean
