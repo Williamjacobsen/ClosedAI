@@ -20,15 +20,15 @@ class RedisManager:
         self.redis_client = redis.Redis(host='localhost', port=6379, decode_responses=True)
         self.pubsub = self.redis_client.pubsub()
 
-    def redis_subscriber(self, *channels, callback=None):
+    def redis_subscriber(self, channels: list, callback=None):
         """
         Subscribes to the specified Redis channels and listens for messages.
-        Calls the optional callback function with the message channel, key, and value.
+        Calls the optional callback function with the message channel.
 
         Args:
-            *channels: One or more Redis channel names to subscribe to.
+            channels (list): Redis channel names to subscribe to.
             callback (function, optional): Function to call when a message is received.
-                                        Should accept three arguments: channel, key, value.
+                                        Should accept three arguments: channel, data.
 
         Raises:
             ValueError: If no channels are provided.
@@ -44,16 +44,13 @@ class RedisManager:
                 if message['type'] == 'message':
                     try:
                         data = json.loads(message['data'])
-                        key = data.get('key')
-                        value = data.get('value')
                         channel = message['channel']
 
                         print(f"Received on {channel}:")
-                        print(f"   Key    : {key}")
-                        print(f"   Value  : {value}")
+                        print(data)
 
                         if callback:
-                            callback(channel, key, value)
+                            callback(channel, data)
 
                     except json.JSONDecodeError:
                         print("Received non-JSON message:", message['data'])
