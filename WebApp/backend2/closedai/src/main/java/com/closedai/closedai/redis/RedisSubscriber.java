@@ -4,6 +4,8 @@ import java.time.Duration;
 
 import org.springframework.stereotype.Component;
 
+import com.closedai.closedai.chatsystem.response.HandleResponse;
+
 import jakarta.annotation.PostConstruct;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -13,9 +15,11 @@ import redis.clients.jedis.JedisPubSub;
 public class RedisSubscriber {
 
     private final JedisPool jedisPool;
+    private final HandleResponse handleResponse;
 
-    public RedisSubscriber(JedisPool jedisPool) {
+    public RedisSubscriber(JedisPool jedisPool, HandleResponse handleResponse) {
         this.jedisPool = jedisPool;
+        this.handleResponse = handleResponse;
     }
 
     @PostConstruct
@@ -30,6 +34,7 @@ public class RedisSubscriber {
                         @Override
                         public void onMessage(String channel, String message) {
                             System.out.println("Received from " + channel + ": " + message);
+                            handleResponse.process(message);
                         }
 
                     }, "prompt_channel", "response_channel");
