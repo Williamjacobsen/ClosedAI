@@ -24,7 +24,7 @@ def RedisSubscriber(scraper):
         promptbot.send_prompt(scraper=scraper, prompt=prompt_text)
         GetResponse(prompt_id)
 
-    redis_client.redis_subscriber("prompt_channel", callback=handle_message)
+    redis_client.redis_subscriber(channels=["prompt_channel"], callback=handle_message)
 
 if __name__ == '__main__':
     scraper = promptbot.run()
