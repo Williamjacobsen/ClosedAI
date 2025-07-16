@@ -15,7 +15,7 @@ public class SseService {
 
         // TODO: Verify sessionId 
 
-        SseEmitter emitter = new SseEmitter(30_000L);
+        SseEmitter emitter = new SseEmitter(300_000L);
 
         emitter.onCompletion(() -> emitters.remove(sessionId));
         emitter.onTimeout(() -> emitters.remove(sessionId));
@@ -35,7 +35,11 @@ public class SseService {
         }
 
         try {
-            emitter.send(message);
+            emitter.send(
+                SseEmitter.event()
+                    .name("response")
+                    .data(message)
+                );
 
         } catch (IOException e) { 
 

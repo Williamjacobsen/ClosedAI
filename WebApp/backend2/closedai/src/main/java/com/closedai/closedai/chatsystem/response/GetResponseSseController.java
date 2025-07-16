@@ -30,7 +30,12 @@ public class GetResponseSseController {
             return;
         }
 
-        sseService.sendSse(data.sessionId(), data.response);
+        System.out.println(String.format(
+            "Processing response JSON: { sessionId = %s, response = %s }", 
+            data.sessionId(), data.response()
+            ));
+
+        sseService.sendSse(data.sessionId(), data.response());
     }
 
 }

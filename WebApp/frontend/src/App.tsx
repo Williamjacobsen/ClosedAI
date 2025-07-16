@@ -5,30 +5,29 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { BallTriangle } from "react-loading-icons";
 
-/**
- * Hook up to the Spring-Boot SSE endpoint and
- * push every incoming JSON payload into the UI timeline.
- *
- * - Expects the backend to publish events with name "response"
- *   and a body shaped like { id, value, … }  (same as your DB rows).
- * - Shows a banner if the SSE stream dies (e.g., backend down).
- */
 export const useSseResponses = (
   setPrompts: React.Dispatch<
     React.SetStateAction<{ id: number; value: any; type: string }[]>
   >
 ) => {
   const [sseDown, setSseDown] = useState(false);
+  const sseRef = useRef<EventSource | null>(null);
 
-  useEffect(() => {
-    // ──────────────────────── open the stream
-    const src = new EventSource("http://localhost:8080/sse/responses", {
-      withCredentials: false,
+  const connect = () => {
+    if (sseRef.current) {
+      sseRef.current.close();
+    }
+
+    const src = new EventSource("http://localhost:8080/get-response", {
+      withCredentials: true,
     });
 
-    // ──────────────────────── receive messages
+    sseRef.current = src;
+
     const onResponse = (evt: MessageEvent) => {
       try {
+        console.log(`SSE Response: ${evt.data}`);
+
         const payload = JSON.parse(evt.data) as {
           id: number;
           value: string;
@@ -45,22 +44,21 @@ export const useSseResponses = (
 
     src.addEventListener("response", onResponse);
 
-    // ──────────────────────── basic fault handling
     src.onerror = () => {
-      // network hiccup → leave a note for the user
       setSseDown(true);
-      // close so browser doesn't keep hammering the endpoint
       src.close();
     };
+  };
 
-    // ──────────────────────── cleanup on unmount
+  useEffect(() => {
     return () => {
-      src.removeEventListener("response", onResponse);
-      src.close();
+      if (sseRef.current) {
+        sseRef.current.close();
+      }
     };
-  }, [setPrompts]);
+  }, []);
 
-  return { sseDown };
+  return { sseDown, connect };
 };
 
 /**
@@ -119,7 +117,7 @@ function App() {
   const [prompts, setPrompts] = useState<
     { id: number; value: any; type: string }[]
   >([]);
-  const { sseDown } = useSseResponses(setPrompts);
+  const { sseDown, connect } = useSseResponses(setPrompts);
 
   /* Automatically scroll down */
   const divScrollDownRef = useRef<null | HTMLDivElement>(null);
@@ -187,6 +185,8 @@ function App() {
       setInputText("");
 
       console.log("Response:", response.data);
+
+      connect();
     } catch (error) {
       console.error("Error sending POST request:", error);
       setPrompts(prompts.slice(0, -1));

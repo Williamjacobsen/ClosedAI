@@ -22,7 +22,7 @@ public class SseController {
     }
     
     @GetMapping(
-        path="/sse", 
+        path="/get-response", 
         produces=MediaType.TEXT_EVENT_STREAM_VALUE
     )
     public SseEmitter subscribe(
