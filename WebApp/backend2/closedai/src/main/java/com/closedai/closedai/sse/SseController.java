@@ -34,9 +34,9 @@ public class SseController {
 
         System.out.println("Handling SSE for User Session ID = " + sessionId);
 
-        SseEmitter emitter = sseService.createEmitter();
+        SseEmitter emitter = sseService.addEmitter(sessionId);
 
-        sseService.sendSingleEvent("Hello world!");
+        sseService.sendSse(sessionId, "Connection Established...");
         
         return emitter;
     }

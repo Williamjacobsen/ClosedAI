@@ -4,7 +4,7 @@ import java.time.Duration;
 
 import org.springframework.stereotype.Component;
 
-import com.closedai.closedai.chatsystem.response.HandleResponse;
+import com.closedai.closedai.chatsystem.response.GetResponseSseController;
 
 import jakarta.annotation.PostConstruct;
 import redis.clients.jedis.Jedis;
@@ -15,9 +15,9 @@ import redis.clients.jedis.JedisPubSub;
 public class RedisSubscriber {
 
     private final JedisPool jedisPool;
-    private final HandleResponse handleResponse;
+    private final GetResponseSseController handleResponse;
 
-    public RedisSubscriber(JedisPool jedisPool, HandleResponse handleResponse) {
+    public RedisSubscriber(JedisPool jedisPool, GetResponseSseController handleResponse) {
         this.jedisPool = jedisPool;
         this.handleResponse = handleResponse;
     }
