@@ -34,10 +34,14 @@ public class RedisSubscriber {
                         @Override
                         public void onMessage(String channel, String message) {
                             System.out.println("Received from " + channel + ": " + message);
-                            handleResponse.process(message);
+
+                            if ("response_channel".equals(channel)) {
+                                handleResponse.process(message);
+                            }
+                            
                         }
 
-                    }, "response_channel");
+                    }, "prompt_channel", "response_channel");
 
                 } catch (Exception e) {
                     System.err.println("Redis subscription error: " + e.getMessage());

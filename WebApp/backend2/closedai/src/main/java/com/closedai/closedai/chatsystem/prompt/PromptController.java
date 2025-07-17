@@ -57,6 +57,8 @@ public class PromptController {
 
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
+        // TODO: chatSessionName should be tied to sessionId
+
         redisPublisher.publish("prompt_channel", json);
 
         return ResponseEntity.ok(String.format("Received prompt from session { session = %s, prompt = %s }", sessionId, prompt));
