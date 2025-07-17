@@ -20,7 +20,8 @@ def pub_response():
 def callbackFunc(channel, data):
     print(f"Message on [{channel}]:")
     print(data)
-    simulate_bot_response()
+    if channel == "prompt_channel":
+        simulate_bot_response()
 
 def subscribers():
     client.redis_subscriber(channels=["prompt_channel", "response_channel"], callback=callbackFunc)
