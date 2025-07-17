@@ -37,7 +37,7 @@ public class RedisSubscriber {
                             handleResponse.process(message);
                         }
 
-                    }, "prompt_channel", "response_channel");
+                    }, "response_channel");
 
                 } catch (Exception e) {
                     System.err.println("Redis subscription error: " + e.getMessage());
