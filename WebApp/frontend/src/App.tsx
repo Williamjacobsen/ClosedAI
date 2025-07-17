@@ -1,8 +1,15 @@
 import { useState } from "react";
 import sendPrompt from "./utils/sendPrompt";
+import { createSSEConnection } from "./utils/sse";
+
+type ChatMessage = {
+  type: "prompt" | "response";
+  content: string;
+};
 
 function App() {
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key == "Enter" && !e.shiftKey) {
@@ -26,8 +33,43 @@ function App() {
       return;
     }
 
+    setMessages((prev) => [...prev, { type: "prompt", content: message }]);
     setMessage("");
+    handleStartConnection();
   };
+
+  const handleStartConnection = () => {
+    createSSEConnection({
+      url: "http://localhost:8080/get-response",
+      withCredentials: true,
+
+      onMessage: (event) => {
+        if (event.data === "Connection Established...") {
+          return;
+        }
+
+        if (typeof event.data !== "string") {
+          console.error("Expected a string from SSE, got:", typeof event.data);
+          return;
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          { type: "response", content: event.data },
+        ]);
+
+        console.log(`Received response: ${event.data}`);
+      },
+
+      eventName: "response",
+
+      onOpen: () => console.log("Connection established"),
+      onError: (error) => console.error("onerror", error),
+      onClose: () => console.log("Connection closed by server."),
+    });
+  };
+
+  // TODO: Should show user if an important error has happend
 
   return (
     <div>
@@ -40,7 +82,13 @@ function App() {
 
           {/* Chat History */}
           <div className="flex-4 flex justify-center">
-            <div className="bg-white flex justify-center w-6xl h-full rounded-xl"></div>
+            <div className="bg-white flex justify-center w-6xl h-full rounded-xl">
+              <ul>
+                {messages.map((message, i) => (
+                  <li key={i}>{message.content}</li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Input field */}

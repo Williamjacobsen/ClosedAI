@@ -15,7 +15,7 @@ public class SseService {
 
         // TODO: Verify sessionId 
 
-        SseEmitter emitter = new SseEmitter(300_000L);
+        SseEmitter emitter = new SseEmitter(600_000L);
 
         emitter.onCompletion(() -> emitters.remove(sessionId));
         emitter.onTimeout(() -> emitters.remove(sessionId));
