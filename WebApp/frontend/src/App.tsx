@@ -1,4 +1,5 @@
 import { useState } from "react";
+import sendPrompt from "./utils/sendPrompt";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -10,11 +11,22 @@ function App() {
     }
   };
 
-  const handleSubmit = () => {
-    if (message.trim() !== "") {
-      console.log("Sending:", message);
-      setMessage("");
+  const handleSubmit = async () => {
+    if (message.trim() === "") {
+      console.error("Can't send an empty prompt.");
+      return;
     }
+
+    console.log("Sending:", message);
+
+    const result = await sendPrompt("default", message);
+
+    if (!result) {
+      console.error("An error occurred during response from the server.");
+      return;
+    }
+
+    setMessage("");
   };
 
   return (
