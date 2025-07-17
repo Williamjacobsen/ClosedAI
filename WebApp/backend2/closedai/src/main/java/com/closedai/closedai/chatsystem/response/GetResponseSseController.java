@@ -15,7 +15,7 @@ public class GetResponseSseController {
         this.sseService = sseService;
     }
 
-    public record messageToJson(String sessionId, String response) {}
+    public record messageToJson(String sessionId, String chatSessionName, String response) {}
 
     /** Called from RedisSubscriber */
     public void process(String message) {
@@ -29,11 +29,6 @@ public class GetResponseSseController {
             System.out.println(e.getMessage());
             return;
         }
-
-        System.out.println(String.format(
-            "Processing response JSON: { sessionId = %s, response = %s }", 
-            data.sessionId(), data.response()
-            ));
 
         sseService.sendSse(data.sessionId(), data.response());
     }
