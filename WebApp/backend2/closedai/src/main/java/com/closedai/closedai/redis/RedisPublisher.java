@@ -1,5 +1,7 @@
 package com.closedai.closedai.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import redis.clients.jedis.Jedis;
@@ -7,6 +9,8 @@ import redis.clients.jedis.JedisPool;
 
 @Component
 public class RedisPublisher {
+
+    private final static Logger logger = LoggerFactory.getLogger(RedisPublisher.class);
 
     private final JedisPool jedisPool;
 
@@ -22,7 +26,7 @@ public class RedisPublisher {
         try (Jedis jedis = jedisPool.getResource()) {
 
             if (isNullOrEmpty(message)) {
-                System.out.println("Channel or message is null. Publish aborted.");
+                logger.info("Channel or message is null. Publish aborted.");
                 return;
             }
 

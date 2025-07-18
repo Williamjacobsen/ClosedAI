@@ -1,5 +1,7 @@
 package com.closedai.closedai.sse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class SseController {
+
+    private final static Logger logger = LoggerFactory.getLogger(SseController.class);
 
     private final SseService sseService;
     private final SessionService sessionService;
@@ -32,7 +36,7 @@ public class SseController {
 
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
-        System.out.println("Handling SSE for User Session ID = " + sessionId);
+        logger.info("Handling SSE for User Session ID = " + sessionId);
 
         SseEmitter emitter = sseService.addEmitter(sessionId);
 

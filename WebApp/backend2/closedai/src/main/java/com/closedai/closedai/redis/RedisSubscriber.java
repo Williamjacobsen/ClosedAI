@@ -2,6 +2,8 @@ package com.closedai.closedai.redis;
 
 import java.time.Duration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.closedai.closedai.chatsystem.response.GetResponseSseController;
@@ -13,6 +15,8 @@ import redis.clients.jedis.JedisPubSub;
 
 @Component
 public class RedisSubscriber {
+
+    private final static Logger logger = LoggerFactory.getLogger(RedisSubscriber.class);
 
     private final JedisPool jedisPool;
     private final GetResponseSseController handleResponse;
@@ -33,7 +37,7 @@ public class RedisSubscriber {
 
                         @Override
                         public void onMessage(String channel, String message) {
-                            System.out.println("Received from " + channel + ": " + message);
+                            logger.info("Received from " + channel + ": " + message);
 
                             if ("response_channel".equals(channel)) {
                                 handleResponse.process(message);
@@ -44,7 +48,7 @@ public class RedisSubscriber {
                     }, "prompt_channel", "response_channel");
 
                 } catch (Exception e) {
-                    System.err.println("Redis subscription error: " + e.getMessage());
+                    logger.info("Redis subscription error: " + e.getMessage());
 
                     try {
                         Thread.sleep(Duration.ofSeconds(5));
