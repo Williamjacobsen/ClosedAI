@@ -30,7 +30,7 @@ public class GetResponseSseController {
         try {
             data = objectMapper.readValue(message, messageToJson.class);        
         } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
             return;
         }
 

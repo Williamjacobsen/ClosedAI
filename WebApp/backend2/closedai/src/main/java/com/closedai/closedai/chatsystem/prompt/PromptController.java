@@ -1,5 +1,7 @@
 package com.closedai.closedai.chatsystem.prompt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,8 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/prompt")
 public class PromptController {
 
+    private final static Logger logger = LoggerFactory.getLogger(PromptController.class);
+    
     private final SessionService sessionService;
     private final RedisPublisher redisPublisher;
 
@@ -43,7 +47,7 @@ public class PromptController {
         @CookieValue(name = "SESSION_ID", required = false) String cookieSessionId,
         HttpServletResponse response
     ) {
-        System.out.println(requestBody.toString());
+        logger.info(requestBody.toString());
 
         String prompt = requestBody.getPrompt();
         String chatSessionName = requestBody.getChatSessionName();
@@ -55,13 +59,14 @@ public class PromptController {
             return ResponseEntity.badRequest().body("Invalid JSON input");
         }
 
+        @SuppressWarnings("unused")
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
         // TODO: chatSessionName should be tied to sessionId
 
         redisPublisher.publish("prompt_channel", json);
 
-        return ResponseEntity.ok(String.format("Received prompt from session { session = %s, prompt = %s }", sessionId, prompt));
+        return ResponseEntity.ok(requestBody.toString());
     }
 
 }

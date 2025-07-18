@@ -26,7 +26,7 @@ public class RedisPublisher {
         try (Jedis jedis = jedisPool.getResource()) {
 
             if (isNullOrEmpty(message)) {
-                logger.info("Channel or message is null. Publish aborted.");
+                logger.error("Channel or message is null. Publish aborted.");
                 return;
             }
 

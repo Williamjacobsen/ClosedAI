@@ -48,7 +48,7 @@ public class RedisSubscriber {
                     }, "prompt_channel", "response_channel");
 
                 } catch (Exception e) {
-                    logger.info("Redis subscription error: " + e.getMessage());
+                    logger.error("Redis subscription error: " + e.getMessage());
 
                     try {
                         Thread.sleep(Duration.ofSeconds(5));

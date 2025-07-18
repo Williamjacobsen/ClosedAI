@@ -27,7 +27,7 @@ public class SseService {
 
         SessionEntity session = sessionService.getSession(sessionId);
         if (session == null) {
-            logger.error("Error: Creating an emitter requires a session.");
+            logger.error("Creating an emitter requires a session.");
             return null;
         }
 
@@ -46,7 +46,7 @@ public class SseService {
         SseEmitter emitter = emitters.get(sessionId);
 
         if (emitter == null) {
-            logger.error("Error: Emitter is null for sessionId = " + sessionId);
+            logger.error("Emitter is null for sessionId = " + sessionId);
             return false;
         }
 
