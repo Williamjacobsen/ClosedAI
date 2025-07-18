@@ -17,9 +17,8 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public SessionEntity getOrCreateSession(String sessionId, HttpServletResponse response) {
+    public SessionEntity getSession(String sessionId) {
         
-        // Does session exist
         if (sessionId != null) {
             SessionEntity existing = sessionRepository.findBySessionId(sessionId);
             if (existing != null) {
@@ -28,7 +27,11 @@ public class SessionService {
             }
         }
 
-        // Create new session
+        return null;
+    }
+
+    private SessionEntity createSession(HttpServletResponse response) {
+        
         String newSessionId = UUID.randomUUID().toString();
         SessionEntity newSession = new SessionEntity(newSessionId);
         sessionRepository.save(newSession);
@@ -42,6 +45,17 @@ public class SessionService {
         response.addHeader("Set-Cookie", cookie.toString());
 
         return newSession;
+    }
+
+    public SessionEntity getOrCreateSession(String sessionId, HttpServletResponse response) {
+        
+        SessionEntity session = getSession(sessionId);
+
+        if (session != null) {
+            return session;
+        }
+
+        return createSession(response);
     }
 
 }
