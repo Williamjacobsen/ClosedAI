@@ -2,7 +2,8 @@ import { createSSEConnection } from "../utils/sse";
 import type { ChatMessage } from "../types/chatMessage";
 
 export default function handleStartConnection(
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
+  sendingRef: React.RefObject<boolean>
 ) {
   createSSEConnection({
     url: "http://localhost:8080/get-response",
@@ -24,12 +25,17 @@ export default function handleStartConnection(
       ]);
 
       console.log(`Received response: ${event.data}`);
+
+      sendingRef.current = false;
     },
 
     eventName: "response",
 
     onOpen: () => console.log("Connection established"),
-    onError: (error) => console.error("onerror", error),
+    onError: (error) => {
+      console.error("onerror", error);
+      sendingRef.current = false;
+    },
     onClose: () => console.log("Connection closed by server."),
   });
 }

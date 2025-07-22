@@ -5,7 +5,8 @@ import handleStartConnection from "./useSseResponse";
 export default async function handleSubmit(
   prompt: string,
   setPrompt: React.Dispatch<React.SetStateAction<string>>,
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
+  sendingRef: React.RefObject<boolean>
 ) {
   if (prompt.trim() === "") {
     console.error("Can't send an empty prompt.");
@@ -23,5 +24,5 @@ export default async function handleSubmit(
 
   setMessages((prev) => [...prev, { type: "prompt", content: prompt }]);
   setPrompt("");
-  handleStartConnection(setMessages);
+  handleStartConnection(setMessages, sendingRef);
 }
