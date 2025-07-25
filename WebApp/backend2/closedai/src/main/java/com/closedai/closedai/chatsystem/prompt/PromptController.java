@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.closedai.closedai.chatsystem.history.ChatHistoryService;
 import com.closedai.closedai.redis.RedisPublisher;
 import com.closedai.closedai.session.SessionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,13 +25,16 @@ public class PromptController {
     
     private final SessionService sessionService;
     private final RedisPublisher redisPublisher;
+    private final ChatHistoryService chatHistoryService;
 
     public PromptController(
         SessionService sessionService,
-        RedisPublisher redisPublisher
+        RedisPublisher redisPublisher,
+        ChatHistoryService chatHistoryService
     ) {
         this.sessionService = sessionService;
         this.redisPublisher = redisPublisher;
+        this.chatHistoryService = chatHistoryService;
     }
 
     public record promptRequest(String chatSessionName, String prompt) {};
@@ -49,8 +53,12 @@ public class PromptController {
     ) {
         logger.info(requestBody.toString());
 
+        String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
+
         String prompt = requestBody.getPrompt();
         String chatSessionName = requestBody.getChatSessionName();
+
+        chatHistoryService.addToChatHistory(sessionId, prompt, chatSessionName);
 
         String json;
         try {
@@ -58,9 +66,6 @@ public class PromptController {
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body("Invalid JSON input");
         }
-
-        @SuppressWarnings("unused")
-        String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
         // TODO: chatSessionName should be tied to sessionId
 
