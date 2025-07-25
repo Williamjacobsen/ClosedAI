@@ -63,6 +63,7 @@ function App() {
                     <BallTriangle fill="#000000" width={80} height={80} />
                   </div>
                 ) : null}
+                <li className="w-1 h-5"></li>
               </ul>
             </div>
           </div>
