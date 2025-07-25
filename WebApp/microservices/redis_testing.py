@@ -27,7 +27,7 @@ def subscribers():
     client.redis_subscriber(channels=["prompt_channel", "response_channel"], callback=callbackFunc)
 
 def simulate_bot_response():
-    time.sleep(10)
+    time.sleep(5)
     pub_response()
 
 if __name__ == '__main__':

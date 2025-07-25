@@ -4,11 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SessionRepository extends JpaRepository<SessionEntity, Long> { // <SessionEntity, Long> = <JPA Entity, Primary Key>
-    
+
     SessionEntity findBySessionId(String sessionId);
 
     @Modifying 

@@ -3,6 +3,8 @@ package com.closedai.closedai.session;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +46,7 @@ public class SessionEntity {
 
     public Long getId() { return this.id; }
     
+    @Transactional(readOnly = true)
     public String getSessionId() { return this.sessionId; }
     public void setSessionId(String sessionId) { this.sessionId = sessionId; }
 

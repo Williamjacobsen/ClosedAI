@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import type { ChatMessage } from "./types/chatMessage";
 import handleSubmit from "./hooks/useSendPrompt";
+import { BallTriangle } from "react-loading-icons";
 
 function App() {
   const [prompt, setPrompt] = useState<string>("");
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <div className="h-screen">
+      {/* <BallTriangle fill="#000000" width={50} height={50} /> */}
       <div className="bg-gray-100">
         <div className="flex flex-col h-screen">
           {/* Title */}
@@ -45,7 +47,7 @@ function App() {
                     <div
                       className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
                         message.type === "prompt"
-                          ? "bg-gray-900 text-white rounded-br-none"
+                          ? "bg-gray-300 text-black rounded-br-none"
                           : "bg-gray-100 text-black rounded-bl-none"
                       }`}
                     >
@@ -53,6 +55,12 @@ function App() {
                     </div>
                   </li>
                 ))}
+                {sendingRef.current ? (
+                  <div className="bg-gray-100 text-black rounded-bl-none p-3 rounded-lg w-25">
+                    <h4 className="font-bold text-lg">Loading:</h4>
+                    <BallTriangle fill="#000000" width={80} height={80} />
+                  </div>
+                ) : null}
               </ul>
             </div>
           </div>
