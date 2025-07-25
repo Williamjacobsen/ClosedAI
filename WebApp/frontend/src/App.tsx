@@ -14,6 +14,8 @@ function App() {
 
       if (!sendingRef.current) {
         sendingRef.current = true;
+        setMessages((prev) => [...prev, { type: "prompt", content: prompt }]);
+        setPrompt("");
         await handleSubmit(prompt, setPrompt, setMessages, sendingRef);
       }
     }

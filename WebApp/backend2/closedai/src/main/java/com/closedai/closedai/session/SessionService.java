@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,6 +18,7 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
+    @Transactional(readOnly = true)
     public SessionEntity getSession(String sessionId) {
         
         if (sessionId != null) {
@@ -30,6 +32,7 @@ public class SessionService {
         return null;
     }
 
+    @Transactional
     private SessionEntity createSession(HttpServletResponse response) {
         
         String newSessionId = UUID.randomUUID().toString();
@@ -47,6 +50,7 @@ public class SessionService {
         return newSession;
     }
 
+    @Transactional
     public SessionEntity getOrCreateSession(String sessionId, HttpServletResponse response) {
         
         SessionEntity session = getSession(sessionId);

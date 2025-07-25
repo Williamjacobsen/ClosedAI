@@ -19,7 +19,10 @@ public class SseService {
 
         SseEmitter emitter = new SseEmitter(600_000L);
 
-        emitter.onCompletion(() -> emitters.remove(sessionId));
+        emitter.onCompletion(() -> {
+            emitters.remove(sessionId);
+            logger.info("SSE completed for sessionId: {}", sessionId);
+        });
         emitter.onTimeout(() -> emitters.remove(sessionId));
         emitter.onError((_) -> emitters.remove(sessionId));
 

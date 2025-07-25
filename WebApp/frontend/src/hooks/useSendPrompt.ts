@@ -22,7 +22,9 @@ export default async function handleSubmit(
     return;
   }
 
-  setMessages((prev) => [...prev, { type: "prompt", content: prompt }]);
-  setPrompt("");
+  // TODO: undo if err
+  //setMessages((prev) => [...prev, { type: "prompt", content: prompt }]);
+  //setPrompt("");
+
   handleStartConnection(setMessages, sendingRef);
 }
