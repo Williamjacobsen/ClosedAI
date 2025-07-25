@@ -9,13 +9,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
-public class GetResponseSseController {
+public class GetResponseSseService {
     
-    private final static Logger logger = LoggerFactory.getLogger(GetResponseSseController.class);
+    private final static Logger logger = LoggerFactory.getLogger(GetResponseSseService.class);
 
     private final SseService sseService;
 
-    public GetResponseSseController(SseService sseService) {
+    public GetResponseSseService(SseService sseService) {
         this.sseService = sseService;
     }
 

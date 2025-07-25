@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.closedai.closedai.chatsystem.response.GetResponseSseController;
+import com.closedai.closedai.chatsystem.response.GetResponseSseService;
 
 import jakarta.annotation.PostConstruct;
 import redis.clients.jedis.Jedis;
@@ -19,9 +19,9 @@ public class RedisSubscriber {
     private final static Logger logger = LoggerFactory.getLogger(RedisSubscriber.class);
 
     private final JedisPool jedisPool;
-    private final GetResponseSseController handleResponse;
+    private final GetResponseSseService handleResponse;
 
-    public RedisSubscriber(JedisPool jedisPool, GetResponseSseController handleResponse) {
+    public RedisSubscriber(JedisPool jedisPool, GetResponseSseService handleResponse) {
         this.jedisPool = jedisPool;
         this.handleResponse = handleResponse;
     }
