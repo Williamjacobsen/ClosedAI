@@ -10,8 +10,7 @@ public class ChatHistoryDTO {
     private String sessionId;
 
     @NotNull
-    @Size(max = 45)
-    private String type;
+    private MessageType type;
 
     @Size(max = 10000)
     private String message;
@@ -22,20 +21,23 @@ public class ChatHistoryDTO {
     public String getSessionId() {
         return sessionId;
     }
+
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 
-    public String getType() {
+    public MessageType getType() {
         return type;
     }
-    public void setType(String type) {
+
+    public void setType(MessageType type) {
         this.type = type;
     }
 
     public String getMessage() {
         return message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -43,8 +45,9 @@ public class ChatHistoryDTO {
     public String getChatSessionName() {
         return chatSessionName;
     }
+
     public void setChatSessionName(String chatSessionName) {
         this.chatSessionName = chatSessionName;
     }
-    
+
 }

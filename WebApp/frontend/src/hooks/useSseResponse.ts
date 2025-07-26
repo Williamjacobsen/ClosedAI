@@ -21,7 +21,7 @@ export default function handleStartConnection(
 
       setMessages((prev) => [
         ...prev,
-        { type: "response", message: event.data },
+        { type: "RESPONSE", message: event.data },
       ]);
 
       console.log(`Received response: ${event.data}`);

@@ -1,5 +1,5 @@
 export type ChatMessage = {
-  type: "prompt" | "response";
+  type: "PROMPT" | "RESPONSE";
   message: string;
   chatSessionName?: string;
 };

@@ -14,20 +14,19 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "chat_history")
 public class ChatHistoryEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "session_id", nullable=false)
+    @Column(name = "session_id", nullable = false)
     private String sessionId;
 
-    @Size(max = 45)
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable=false)
+    @Column(name = "type", nullable = false)
     private MessageType type;
 
     @Column(name = "message", columnDefinition = "LONGTEXT")
@@ -37,7 +36,8 @@ public class ChatHistoryEntity {
     @Column(name = "chat_session_name")
     private String chatSessionName;
 
-    public ChatHistoryEntity() {}
+    public ChatHistoryEntity() {
+    }
 
     public ChatHistoryEntity(String sessionId) {
         this.sessionId = sessionId;
@@ -50,13 +50,15 @@ public class ChatHistoryEntity {
     public String getSessionId() {
         return this.sessionId;
     }
+
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
-    
+
     public MessageType getType() {
         return this.type;
     }
+
     public void setType(MessageType type) {
         this.type = type;
     }
@@ -64,6 +66,7 @@ public class ChatHistoryEntity {
     public String getMessage() {
         return this.message;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -71,6 +74,7 @@ public class ChatHistoryEntity {
     public String getChatSessionName() {
         return this.chatSessionName;
     }
+
     public void setChatSessionName(String chatSessionName) {
         this.chatSessionName = chatSessionName;
     }
@@ -78,8 +82,8 @@ public class ChatHistoryEntity {
     @Override
     public String toString() {
         return String.format(
-            "ChatHistoryEntity{ id = %s, sessionId = %s, type = %s, message = %s, chatSessionName = %s }",
-            this.id, this.sessionId, this.type, this.message, this.chatSessionName
+                "ChatHistoryEntity{ id = %s, sessionId = %s, type = %s, message = %s, chatSessionName = %s }",
+                this.id, this.sessionId, this.type, this.message, this.chatSessionName
         );
     }
 

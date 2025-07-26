@@ -15,7 +15,7 @@ function App() {
 
       if (!sendingRef.current) {
         sendingRef.current = true;
-        setMessages((prev) => [...prev, { type: "prompt", message: prompt }]);
+        setMessages((prev) => [...prev, { type: "PROMPT", message: prompt }]);
         setPrompt("");
         await handleSubmit(prompt, setPrompt, setMessages, sendingRef);
       }
@@ -55,14 +55,14 @@ function App() {
                   <li
                     key={i}
                     className={`my-2 flex ${
-                      message.type === "prompt"
+                      message.type === "PROMPT"
                         ? "justify-end"
                         : "justify-start"
                     }`}
                   >
                     <div
                       className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
-                        message.type === "prompt"
+                        message.type === "RESPONSE"
                           ? "bg-gray-300 text-black rounded-br-none"
                           : "bg-gray-100 text-black rounded-bl-none"
                       }`}
