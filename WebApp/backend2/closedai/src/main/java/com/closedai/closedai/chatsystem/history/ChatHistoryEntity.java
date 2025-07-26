@@ -2,6 +2,8 @@ package com.closedai.closedai.chatsystem.history;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +26,9 @@ public class ChatHistoryEntity {
 
     @Size(max = 45)
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable=false)
-    private String type;
+    private MessageType type;
 
     @Column(name = "message", columnDefinition = "LONGTEXT")
     private String message;
@@ -51,10 +54,10 @@ public class ChatHistoryEntity {
         this.sessionId = sessionId;
     }
     
-    public String getType() {
+    public MessageType getType() {
         return this.type;
     }
-    public void setType(String type) {
+    public void setType(MessageType type) {
         this.type = type;
     }
 

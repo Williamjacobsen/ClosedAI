@@ -11,14 +11,14 @@ public class ChatHistoryService {
         this.chatHistoryRepository = chatHistoryRepository;
     }
 
-    public void addToChatHistory(String sessionId, String prompt, String chatSessionName) {
+    public void addToChatHistory(String sessionId, String prompt, String chatSessionName, MessageType type) {
         ChatHistoryEntity entity = new ChatHistoryEntity();
         entity.setSessionId(sessionId);
-        entity.setType("prompt");
+        entity.setType(type);
         entity.setMessage(prompt);
         entity.setChatSessionName(chatSessionName);
 
         chatHistoryRepository.save(entity);
     }
-    
+
 }
