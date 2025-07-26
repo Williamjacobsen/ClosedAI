@@ -15,21 +15,26 @@ public class ChatHistoryController {
 
     private final SessionService sessionService;
     private final ChatHistoryRepository chatHistoryRepository;
+    private final ChatHistoryMapper chatHistoryMapper;
 
-    public ChatHistoryController(SessionService sessionService, ChatHistoryRepository chatHistoryRepository) {
+    public ChatHistoryController(
+            SessionService sessionService,
+            ChatHistoryRepository chatHistoryRepository,
+            ChatHistoryMapper chatHistoryMapper
+    ) {
         this.sessionService = sessionService;
         this.chatHistoryRepository = chatHistoryRepository;
+        this.chatHistoryMapper = chatHistoryMapper;
     }
 
     @GetMapping("/get-chat-history")
-    public List<ChatHistoryEntity> test(
+    public List<ChatHistoryDTO> test(
             @CookieValue(value = "SESSION_ID", required = true) String cookieSessionId,
             HttpServletResponse response
     ) {
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
-        // TODO: SHOULD NOT RETURN sessionId & id, INSTEAD USE SOME DTO
-        List<ChatHistoryEntity> messages = chatHistoryRepository.findAllBySessionId(sessionId);
+        List<ChatHistoryDTO> messages = chatHistoryMapper.toDto(chatHistoryRepository.findAllBySessionId(sessionId));
 
         return messages;
     }
