@@ -63,8 +63,8 @@ function App() {
                     <div
                       className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
                         message.type === "RESPONSE"
-                          ? "bg-gray-300 text-black rounded-br-none"
-                          : "bg-gray-100 text-black rounded-bl-none"
+                          ? "bg-gray-300 text-black rounded-bl-none"
+                          : "bg-gray-100 text-black rounded-br-none"
                       }`}
                     >
                       {message.message}
