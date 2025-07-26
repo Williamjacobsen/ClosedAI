@@ -36,8 +36,6 @@ public class SseController {
             @CookieValue(value = "SESSION_ID", required = true) String cookieSessionId,
             HttpServletResponse response
     ) {
-        // TODO - BUG: DOESN'T WORK WITH TWO USERS  
-
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
         logger.info("Handling SSE for User Session ID = " + sessionId);
