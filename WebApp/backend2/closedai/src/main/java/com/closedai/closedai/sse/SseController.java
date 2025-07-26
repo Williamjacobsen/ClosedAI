@@ -26,16 +26,17 @@ public class SseController {
         this.sseService = sseService;
         this.sessionService = sessionService;
     }
-    
+
     @GetMapping(
-        path="/get-response", 
-        produces=MediaType.TEXT_EVENT_STREAM_VALUE
+            path = "/get-response",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE
     )
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public SseEmitter subscribe(
-        @CookieValue(value="SESSION_ID", required=true) String cookieSessionId,
-        HttpServletResponse response
+            @CookieValue(value = "SESSION_ID", required = true) String cookieSessionId,
+            HttpServletResponse response
     ) {
+        // TODO - BUG: DOESN'T WORK WITH TWO USERS  
 
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
@@ -44,7 +45,7 @@ public class SseController {
         SseEmitter emitter = sseService.addEmitter(sessionId);
 
         sseService.sendSse(sessionId, "Connection Established...");
-        
+
         return emitter;
     }
 
