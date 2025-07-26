@@ -9,6 +9,13 @@ function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const sendingRef = useRef<boolean>(false);
 
+  const divScrollDownRef = useRef<null | HTMLDivElement>(null);
+  useEffect(() => {
+    if (divScrollDownRef.current) {
+      divScrollDownRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key == "Enter" && !e.shiftKey) {
       e.preventDefault(); // Prevent new line
@@ -78,6 +85,8 @@ function App() {
                   </div>
                 ) : null}
                 <li className="w-1 h-5"></li>
+
+                <div ref={divScrollDownRef} />
               </ul>
             </div>
           </div>
