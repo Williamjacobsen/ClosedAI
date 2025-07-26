@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ChatMessage } from "./types/chatMessage";
 import handleSubmit from "./hooks/useSendPrompt";
 import { BallTriangle } from "react-loading-icons";
+import axios from "axios";
 
 function App() {
   const [prompt, setPrompt] = useState<string>("");
@@ -14,12 +15,25 @@ function App() {
 
       if (!sendingRef.current) {
         sendingRef.current = true;
-        setMessages((prev) => [...prev, { type: "prompt", content: prompt }]);
+        setMessages((prev) => [...prev, { type: "prompt", message: prompt }]);
         setPrompt("");
         await handleSubmit(prompt, setPrompt, setMessages, sendingRef);
       }
     }
   };
+
+  useEffect(() => {
+    axios
+      .get<ChatMessage[]>("http://localhost:8080/get-chat-history", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setMessages(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching chat history:", error);
+      });
+  }, []);
 
   // TODO: Should show user if an important error has happend
 
@@ -53,7 +67,7 @@ function App() {
                           : "bg-gray-100 text-black rounded-bl-none"
                       }`}
                     >
-                      {message.content}
+                      {message.message}
                     </div>
                   </li>
                 ))}

@@ -28,6 +28,7 @@ public class ChatHistoryController {
     ) {
         String sessionId = sessionService.getOrCreateSession(cookieSessionId, response).getSessionId();
 
+        // TODO: SHOULD NOT RETURN sessionId & id, INSTEAD USE SOME DTO
         List<ChatHistoryEntity> messages = chatHistoryRepository.findAllBySessionId(sessionId);
 
         return messages;
