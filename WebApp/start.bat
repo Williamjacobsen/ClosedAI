@@ -1,3 +1,5 @@
+REM TODO: make it work for linux
+
 @echo off
 setlocal
 set "ROOT=%~dp0"
