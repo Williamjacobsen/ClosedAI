@@ -42,24 +42,23 @@
 		</dependency>
 
 		<dependency>
-        	<groupId>org.springframework.boot</groupId>
-        	<artifactId>spring-boot-starter-validation</artifactId>
-    	</dependency>
+        		<groupId>org.springframework.boot</groupId>
+        		<artifactId>spring-boot-starter-validation</artifactId>
+    		</dependency>
 
 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-web</artifactId>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-data-jpa</artifactId>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -68,13 +67,13 @@
 		</dependency>
 
 		<dependency>
-    		<groupId>redis.clients</groupId>
-    		<artifactId>jedis</artifactId>
+    			<groupId>redis.clients</groupId>
+    			<artifactId>jedis</artifactId>
 		</dependency>
 
 		<dependency>
-    		<groupId>org.springframework.boot</groupId>
-    		<artifactId>spring-boot-starter-actuator</artifactId>
+    			<groupId>org.springframework.boot</groupId>
+    			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<dependency>
@@ -84,11 +83,17 @@
 		</dependency>
 
 		<dependency>
-        	<groupId>org.mapstruct</groupId>
-        	<artifactId>mapstruct-processor</artifactId>
-        	<version>1.5.5.Final</version>
-        	<scope>provided</scope>
-    	</dependency>
+        		<groupId>org.mapstruct</groupId>
+        		<artifactId>mapstruct-processor</artifactId>
+        		<version>1.5.5.Final</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+    			<groupId>io.github.cdimascio</groupId>
+    			<artifactId>dotenv-java</artifactId>
+    			<version>3.0.2</version>
+  		</dependency>
 
 	</dependencies>
 

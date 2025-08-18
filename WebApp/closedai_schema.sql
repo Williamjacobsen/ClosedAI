@@ -1,0 +1,18 @@
+CREATE DATABASE IF NOT EXISTS closedai;
+USE closedai;
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_used TIMESTAMP NULL
+);
+
+CREATE TABLE IF NOT EXISTS chat_history (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(100) NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  message LONGTEXT,
+  chat_session_name VARCHAR(100),
+  FOREIGN KEY (session_id) REFERENCES sessions(session_id)
+);

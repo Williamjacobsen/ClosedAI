@@ -1,3 +1,7 @@
+
+# TODO: Error loading cookies: [Errno 2] No such file or directory: 'cookies.pkl'
+
+
 import sys
 sys.path.append('../')
 
