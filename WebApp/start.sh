@@ -21,14 +21,17 @@ tmux send-keys  -t "$SESSION:Backend2" "mvn spring-boot:run" C-m
 
 # Prompt consumer
 tmux new-window -t "$SESSION" -n "Prompt consumer" -c "$ROOT/microservices/promptbot"
+tmux send-keys  -t "$SESSION:Prompt consumer" "source ../.venv/bin/activate" C-m
 tmux send-keys  -t "$SESSION:Prompt consumer" "python main.py" C-m
 
 # Data-storage subscriber
 tmux new-window -t "$SESSION" -n "Data-storage sub" -c "$ROOT/microservices/redis_sub_for_data_storage"
+tmux send-keys  -t "$SESSION:Data-storage sub" "source ../.venv/bin/activate" C-m
 tmux send-keys  -t "$SESSION:Data-storage sub" "python main.py" C-m
 
 # Test publisher
 tmux new-window -t "$SESSION" -n "Test publisher" -c "$ROOT/microservices"
+tmux send-keys  -t "$SESSION:Test publisher" "source .venv/bin/activate" C-m
 tmux send-keys  -t "$SESSION:Test publisher" "python redis_testing.py" C-m
 
 # Focus NeoVim
