@@ -1,20 +1,17 @@
 from utils.RedisManager import RedisManager
 import time
-import threading
 
 client = RedisManager()
 
 def pub_prompt():
     client.redis_publisher("prompt_channel", {"key": "testid", "value": "testprompt"})
 
-def pub_response():
+def pub_response(data):
     client.redis_publisher(
         "response_channel", 
         {
-            # TODO: make dynammic
-            #"sessionId": "05bd7ce1-c2ea-40fe-90dd-cc7de51ef151",
-            "sessionId": "54e64cd1-9251-45a3-97cd-b333f603f4a8",
-            "chatSessionName": "defualt",
+            "sessionId": data.sessionId,
+            "chatSessionName": data.chatSessionName,
             "response": "my test response"
         }
     )
@@ -23,19 +20,14 @@ def callbackFunc(channel, data):
     print(f"Message on [{channel}]:")
     print(data)
     if channel == "prompt_channel":
-        simulate_bot_response()
+        simulate_bot_response(data)
 
 def subscribers():
     client.redis_subscriber(channels=["prompt_channel", "response_channel"], callback=callbackFunc)
 
-def simulate_bot_response():
+def simulate_bot_response(data):
     time.sleep(5)
-    pub_response()
+    pub_response(data)
 
 if __name__ == '__main__':
-    threading.Thread(target=subscribers, daemon=True).start()
-
-    while True:
-        time.sleep(0.1)
-        input("Send:")
-        pub_response()
+    subscribers()
