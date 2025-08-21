@@ -11,7 +11,9 @@ def pub_response():
     client.redis_publisher(
         "response_channel", 
         {
-            "sessionId": "05bd7ce1-c2ea-40fe-90dd-cc7de51ef151",
+            # TODO: make dynammic
+            #"sessionId": "05bd7ce1-c2ea-40fe-90dd-cc7de51ef151",
+            "sessionId": "54e64cd1-9251-45a3-97cd-b333f603f4a8",
             "chatSessionName": "defualt",
             "response": "my test response"
         }

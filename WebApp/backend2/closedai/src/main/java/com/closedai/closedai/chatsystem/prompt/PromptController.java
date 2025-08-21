@@ -38,16 +38,13 @@ public class PromptController {
         this.chatHistoryService = chatHistoryService;
     }
 
-    public record promptRequest(String chatSessionName, String prompt) {
+    public record promptRequest(String sessionId, String chatSessionName, String prompt) {
 
     }
 
-    ;
-
-    private String toJson(String chatSessionName, String prompt) throws JsonProcessingException {
-
+    private String toJson(String sessionId, String chatSessionName, String prompt) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(new promptRequest(chatSessionName, prompt));
+        return objectMapper.writeValueAsString(new promptRequest(sessionId, chatSessionName, prompt));
     }
 
     @PostMapping("/send")
@@ -67,7 +64,7 @@ public class PromptController {
 
         String json;
         try {
-            json = toJson(chatSessionName, prompt);
+            json = toJson(sessionId, chatSessionName, prompt);
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body("Invalid JSON input");
         }
