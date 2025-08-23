@@ -50,16 +50,16 @@ function App() {
       <div className="bg-black w-64 h-full shrink-0"></div>
 
       {/* Main */}
-      <div className="bg-gray-100 flex-1 flex-col">
+      <div className="bg-gray-300 flex-1 flex flex-col">
         {/* Title */}
         <h1 className="text-4xl text-gray-800 py-10 text-center">
           ClosedAI - Model C4
         </h1>
 
         {/* Chat History */}
-        <div className="flex-4 flex justify-center overflow-y-auto">
-          <div className="bg-white flex justify-center w-6xl h-full rounded-xl overflow-y-auto whitespace-pre-wrap">
-            <ul className="w-6xl px-10">
+        <div className="flex-1 px-4 pb-4 flex justify-center overflow-y-auto">
+          <div className="bg-white p-4 flex justify-center w-full w-6xl h-full rounded-xl overflow-y-auto whitespace-pre-wrap">
+            <ul className="w-6xl space-y-2">
               {messages.map((message, i) => (
                 <li
                   key={i}
@@ -70,8 +70,8 @@ function App() {
                   <div
                     className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
                       message.type === "RESPONSE"
-                        ? "bg-gray-300 text-black rounded-bl-none"
-                        : "bg-gray-100 text-black rounded-br-none"
+                        ? "bg-gray-400 text-black rounded-bl-none"
+                        : "bg-gray-200 text-black rounded-br-none"
                     }`}
                   >
                     {message.message}
@@ -79,7 +79,7 @@ function App() {
                 </li>
               ))}
               {sendingRef.current ? (
-                <div className="bg-gray-100 text-black rounded-bl-none p-3 rounded-lg w-25">
+                <div className="bg-gray-400 text-black rounded-bl-none p-3 rounded-lg w-25">
                   <h4 className="font-bold text-lg">Loading:</h4>
                   <BallTriangle fill="#000000" width={80} height={80} />
                 </div>
@@ -92,15 +92,15 @@ function App() {
         </div>
 
         {/* Input field */}
-        <div className="flex-1 flex justify-center">
-          <div className="h-full w-2xl flex justify-center items-center">
+        <div className="p-4">
+          <div className="max-w-2xl mx-auto">
             <textarea
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={handleKeyDown}
               value={prompt}
               required
               placeholder="Prompt..."
-              className="bg-white h-4/5 w-2xl rounded-md p-2 resize-none text-lg"
+              className="bg-white h-4/5 w-2xl w-full rounded-md p-2 resize-none text-lg"
             />
           </div>
         </div>
