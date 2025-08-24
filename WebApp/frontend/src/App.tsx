@@ -7,7 +7,7 @@ import axios from "axios";
 function App() {
   const [prompt, setPrompt] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [chatSessions, setChatSessions] = useState<string[]>([]);
+  const [chatSessions, setChatSessions] = useState<string[]>(["default"]);
 
   const sendingRef = useRef<boolean>(false);
 
@@ -45,15 +45,6 @@ function App() {
   }, []);
 
   // TODO: Should show user if an important error has happend
-
-  useEffect(() => {
-    setChatSessions([
-      "Chat session 1",
-      "Chat session 2",
-      "Chat session 3",
-      "Chat session 4",
-    ]);
-  }, []);
 
   return (
     <div className="h-screen flex">
