@@ -47,7 +47,11 @@ function App() {
   return (
     <div className="h-screen flex">
       {/* Sidebar */}
-      <div className="bg-black w-64 h-full shrink-0"></div>
+      <div className="bg-gray-100 w-64 h-full shrink-0 mx-5 py-3">
+        <div className="text-center py-5 bg-gray-300 rounded-md my-2">
+          Chat session 1
+        </div>
+      </div>
 
       {/* Main */}
       <div className="bg-gray-300 flex-1 flex flex-col">
