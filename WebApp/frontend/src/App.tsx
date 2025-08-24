@@ -7,6 +7,8 @@ import axios from "axios";
 function App() {
   const [prompt, setPrompt] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [chatSessions, setChatSessions] = useState<string[]>([]);
+
   const sendingRef = useRef<boolean>(false);
 
   const divScrollDownRef = useRef<null | HTMLDivElement>(null);
@@ -44,13 +46,24 @@ function App() {
 
   // TODO: Should show user if an important error has happend
 
+  useEffect(() => {
+    setChatSessions([
+      "Chat session 1",
+      "Chat session 2",
+      "Chat session 3",
+      "Chat session 4",
+    ]);
+  }, []);
+
   return (
     <div className="h-screen flex">
       {/* Sidebar */}
       <div className="bg-gray-100 w-64 h-full shrink-0 mx-5 py-3">
-        <div className="text-center py-5 bg-gray-300 rounded-md my-2">
-          Chat session 1
-        </div>
+        {chatSessions.map((chatSession) => (
+          <div className="text-center py-5 bg-gray-300 rounded-md my-2">
+            {chatSession}
+          </div>
+        ))}
       </div>
 
       {/* Main */}
