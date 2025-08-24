@@ -8,6 +8,8 @@ function App() {
   const [prompt, setPrompt] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatSessions, setChatSessions] = useState<string[]>(["default"]);
+  const [currentChatSession, setCurrentChatSession] =
+    useState<string>("default");
 
   const sendingRef = useRef<boolean>(false);
 
@@ -26,7 +28,13 @@ function App() {
         sendingRef.current = true;
         setMessages((prev) => [...prev, { type: "PROMPT", message: prompt }]);
         setPrompt("");
-        await handleSubmit(prompt, setPrompt, setMessages, sendingRef);
+        await handleSubmit(
+          prompt,
+          setPrompt,
+          setMessages,
+          currentChatSession,
+          sendingRef,
+        );
       }
     }
   };

@@ -2,11 +2,14 @@ import type { ChatMessage } from "../types/chatMessage";
 import sendPrompt from "../utils/sendPrompt";
 import handleStartConnection from "./useSseResponse";
 
+// TODO: Rename file and functions
+
 export default async function handleSubmit(
   prompt: string,
   setPrompt: React.Dispatch<React.SetStateAction<string>>,
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
-  sendingRef: React.RefObject<boolean>
+  chatSession: string,
+  sendingRef: React.RefObject<boolean>,
 ) {
   if (prompt.trim() === "") {
     console.error("Can't send an empty prompt.");
@@ -15,7 +18,7 @@ export default async function handleSubmit(
 
   console.log("Sending:", prompt);
 
-  const result = await sendPrompt("default", prompt);
+  const result = await sendPrompt(chatSession, prompt);
 
   if (!result) {
     console.error("An error occurred during response from the server.");
