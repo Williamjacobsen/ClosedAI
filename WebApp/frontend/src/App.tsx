@@ -7,9 +7,39 @@ import axios from "axios";
 function App() {
   const [prompt, setPrompt] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+
   const [chatSessions, setChatSessions] = useState<string[]>(["default"]);
   const [currentChatSession, setCurrentChatSession] =
     useState<string>("default");
+  const [isCreatingNewChatSession, setIsCreatingNewChatSession] =
+    useState<boolean>(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (isCreatingNewChatSession && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isCreatingNewChatSession]);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsCreatingNewChatSession(false);
+      }
+    }
+
+    if (isCreatingNewChatSession) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCreatingNewChatSession]);
 
   const sendingRef = useRef<boolean>(false);
 
@@ -55,11 +85,29 @@ function App() {
   // TODO: Should show user if an important error has happend
 
   return (
-    <div className="h-screen flex">
+    <div ref={containerRef} className="h-screen flex">
       {/* Sidebar */}
       <div className="bg-gray-100 w-64 h-full shrink-0 mx-5 py-3">
+        <div
+          className="text-center py-5 bg-gray-400 rounded-md my-2 hover:scale-105"
+          onClick={() => {
+            console.log("Create new chat session");
+            setIsCreatingNewChatSession(true);
+          }}
+        >
+          {isCreatingNewChatSession ? (
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Chat Session Name..."
+            />
+          ) : (
+            <h2>Create new chat session</h2>
+          )}
+        </div>
+
         {chatSessions.map((chatSession) => (
-          <div className="text-center py-5 bg-gray-300 rounded-md my-2">
+          <div className="text-center py-5 bg-gray-300 rounded-md my-2 hover:scale-105">
             {chatSession}
           </div>
         ))}
