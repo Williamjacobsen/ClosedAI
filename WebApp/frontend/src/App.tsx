@@ -69,6 +69,17 @@ function App() {
     }
   };
 
+  const handleCreateChatSession = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const newChatSession = e.currentTarget.value.trim();
+      if (newChatSession === "") return;
+
+      setChatSessions((prev) => [newChatSession, ...prev]);
+      setCurrentChatSession(newChatSession);
+      setIsCreatingNewChatSession(false);
+    }
+  }
+
   useEffect(() => {
     axios
       .get<ChatMessage[]>("http://localhost:8080/get-chat-history", {
@@ -101,7 +112,9 @@ function App() {
               ref={inputRef}
               type="text"
               placeholder="Chat Session Name..."
-            />
+              onKeyDown={handleCreateChatSession}
+              maxLength={20}
+              />
           ) : (
             <h2>Create new chat session</h2>
           )}
