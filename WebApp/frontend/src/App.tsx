@@ -21,12 +21,12 @@ function App() {
     }
   }, [isCreatingNewChatSession]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const createCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        createCardRef.current &&
+        !createCardRef.current.contains(event.target as Node)
       ) {
         setIsCreatingNewChatSession(false);
       }
@@ -85,10 +85,11 @@ function App() {
   // TODO: Should show user if an important error has happend
 
   return (
-    <div ref={containerRef} className="h-screen flex">
+    <div className="h-screen flex">
       {/* Sidebar */}
       <div className="bg-gray-100 w-64 h-full shrink-0 mx-5 py-3">
-        <div
+        <div 
+          ref={createCardRef}
           className="text-center py-5 bg-gray-400 rounded-md my-2 hover:scale-105"
           onClick={() => {
             console.log("Create new chat session");
@@ -127,16 +128,14 @@ function App() {
               {messages.map((message, i) => (
                 <li
                   key={i}
-                  className={`my-2 flex ${
-                    message.type === "PROMPT" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`my-2 flex ${message.type === "PROMPT" ? "justify-end" : "justify-start"
+                    }`}
                 >
                   <div
-                    className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
-                      message.type === "RESPONSE"
+                    className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${message.type === "RESPONSE"
                         ? "bg-gray-400 text-black rounded-bl-none"
                         : "bg-gray-200 text-black rounded-br-none"
-                    }`}
+                      }`}
                   >
                     {message.message}
                   </div>
