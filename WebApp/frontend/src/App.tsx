@@ -3,8 +3,8 @@ import type { ChatMessage } from "./types/chatMessage";
 import handleSubmit from "./hooks/useSendPrompt";
 import { BallTriangle } from "react-loading-icons";
 import axios from "axios";
-import { HugeiconsIcon } from '@hugeicons/react'
-import { CancelCircleIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from "@hugeicons/react";
+import { CancelCircleIcon } from "@hugeicons/core-free-icons";
 
 function App() {
   const [prompt, setPrompt] = useState<string>("");
@@ -76,7 +76,8 @@ function App() {
   ) => {
     if (e.key === "Enter") {
       const newChatSession = e.currentTarget.value.trim();
-      if (newChatSession === "") return;
+      if (newChatSession === "" || chatSessions.includes(newChatSession))
+        return;
 
       setChatSessions((prev) => [newChatSession, ...prev]);
       setCurrentChatSession(newChatSession);
@@ -85,7 +86,9 @@ function App() {
   };
 
   const handleDeleteChatSession = (chatSession: string) => {
-    setChatSessions((prev) => prev.filter((session) => session !== chatSession));
+    setChatSessions((prev) =>
+      prev.filter((session) => session !== chatSession)
+    );
     if (currentChatSession === chatSession) {
       setCurrentChatSession(chatSessions[chatSessions.length - 1]);
     }
@@ -119,13 +122,13 @@ function App() {
           }}
         >
           {isCreatingNewChatSession ? (
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Chat Session Name..."
-                onKeyDown={handleCreateChatSession}
-                maxLength={20}
-              />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Chat Session Name..."
+              onKeyDown={handleCreateChatSession}
+              maxLength={20}
+            />
           ) : (
             <h2>Create new chat session</h2>
           )}
@@ -133,8 +136,16 @@ function App() {
 
         {chatSessions.map((chatSession) => (
           <div className="flex items-center py-5 bg-gray-300 rounded-md my-2 hover:scale-105">
-            <p className="text-center flex-1 max-w-[calc(100%-3rem)] truncate px-5">{chatSession}</p>
-            <HugeiconsIcon icon={CancelCircleIcon} className="ml-2 cursor-pointer" onClick={() => handleDeleteChatSession(chatSession)} />
+            <p className="text-center flex-1 max-w-[calc(100%-3rem)] truncate pl-5">
+              {chatSession}
+            </p>
+            {chatSession === "default" ? null : (
+              <HugeiconsIcon
+                icon={CancelCircleIcon}
+                className="ml-2 cursor-pointer"
+                onClick={() => handleDeleteChatSession(chatSession)}
+              />
+            )}
           </div>
         ))}
       </div>
