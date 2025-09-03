@@ -84,6 +84,13 @@ function App() {
     }
   };
 
+  const handleDeleteChatSession = (chatSession: string) => {
+    setChatSessions((prev) => prev.filter((session) => session !== chatSession));
+    if (currentChatSession === chatSession) {
+      setCurrentChatSession(chatSessions[chatSessions.length - 1]);
+    }
+  };
+
   useEffect(() => {
     axios
       .get<ChatMessage[]>("http://localhost:8080/get-chat-history", {
@@ -127,7 +134,7 @@ function App() {
         {chatSessions.map((chatSession) => (
           <div className="flex items-center py-5 bg-gray-300 rounded-md my-2 hover:scale-105">
             <p className="text-center flex-1 max-w-[calc(100%-3rem)] truncate px-5">{chatSession}</p>
-            <HugeiconsIcon icon={CancelCircleIcon} className="ml-2 cursor-pointer" />
+            <HugeiconsIcon icon={CancelCircleIcon} className="ml-2 cursor-pointer" onClick={() => handleDeleteChatSession(chatSession)} />
           </div>
         ))}
       </div>
