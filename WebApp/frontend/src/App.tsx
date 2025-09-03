@@ -3,6 +3,8 @@ import type { ChatMessage } from "./types/chatMessage";
 import handleSubmit from "./hooks/useSendPrompt";
 import { BallTriangle } from "react-loading-icons";
 import axios from "axios";
+import { HugeiconsIcon } from '@hugeicons/react'
+import { CancelCircleIcon } from '@hugeicons/core-free-icons'
 
 function App() {
   const [prompt, setPrompt] = useState<string>("");
@@ -63,13 +65,15 @@ function App() {
           setPrompt,
           setMessages,
           currentChatSession,
-          sendingRef,
+          sendingRef
         );
       }
     }
   };
 
-  const handleCreateChatSession = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleCreateChatSession = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === "Enter") {
       const newChatSession = e.currentTarget.value.trim();
       if (newChatSession === "") return;
@@ -78,7 +82,7 @@ function App() {
       setCurrentChatSession(newChatSession);
       setIsCreatingNewChatSession(false);
     }
-  }
+  };
 
   useEffect(() => {
     axios
@@ -99,7 +103,7 @@ function App() {
     <div className="h-screen flex">
       {/* Sidebar */}
       <div className="bg-gray-100 w-64 h-full shrink-0 mx-5 py-3">
-        <div 
+        <div
           ref={createCardRef}
           className="text-center py-5 bg-gray-400 rounded-md my-2 hover:scale-105"
           onClick={() => {
@@ -108,12 +112,12 @@ function App() {
           }}
         >
           {isCreatingNewChatSession ? (
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Chat Session Name..."
-              onKeyDown={handleCreateChatSession}
-              maxLength={20}
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Chat Session Name..."
+                onKeyDown={handleCreateChatSession}
+                maxLength={20}
               />
           ) : (
             <h2>Create new chat session</h2>
@@ -121,8 +125,9 @@ function App() {
         </div>
 
         {chatSessions.map((chatSession) => (
-          <div className="text-center py-5 bg-gray-300 rounded-md my-2 hover:scale-105">
-            {chatSession}
+          <div className="flex items-center py-5 bg-gray-300 rounded-md my-2 hover:scale-105">
+            <p className="text-center flex-1 max-w-[calc(100%-3rem)] truncate px-5">{chatSession}</p>
+            <HugeiconsIcon icon={CancelCircleIcon} className="ml-2 cursor-pointer" />
           </div>
         ))}
       </div>
@@ -141,14 +146,16 @@ function App() {
               {messages.map((message, i) => (
                 <li
                   key={i}
-                  className={`my-2 flex ${message.type === "PROMPT" ? "justify-end" : "justify-start"
-                    }`}
+                  className={`my-2 flex ${
+                    message.type === "PROMPT" ? "justify-end" : "justify-start"
+                  }`}
                 >
                   <div
-                    className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${message.type === "RESPONSE"
+                    className={`p-3 rounded-lg max-w-4xl overflow-x-auto ${
+                      message.type === "RESPONSE"
                         ? "bg-gray-400 text-black rounded-bl-none"
                         : "bg-gray-200 text-black rounded-br-none"
-                      }`}
+                    }`}
                   >
                     {message.message}
                   </div>
