@@ -1,6 +1,6 @@
 # ClosedAI
 
-**ClosedAI** is a proxy-based multi-user AI chatbot interface that lets multiple users interact with a Large Language Model (LLM) (such as OpenAI’s ChatGPT) through a single centralized bot account. In essence, ClosedAI routes all user prompts to an automated browser bot (powered by Selenium) which communicates with the ChatGPT web interface, allowing many users to share one account while minimizing detection risk. It is built as a full-stack application with a React/TypeScript frontend, a Jav...
+**ClosedAI** is a proxy-based multi-user AI chatbot interface that lets multiple users interact with a Large Language Model (LLM) (such as OpenAI’s ChatGPT) through a single centralized bot account. In essence, ClosedAI routes all user prompts to an automated browser bot (powered by Selenium) which communicates with the ChatGPT web interface, allowing many users to share one account while minimizing detection risk. It is built as a full-stack application with a React/TypeScript frontend, a Java Spring Boot backend, with Python microservices.
 
 ## Features
 
@@ -15,11 +15,11 @@
 - **Frontend:** React + TypeScript.  
 - **Backend:** Java Spring Boot (in `backend2`).  
 - **AI Bot Microservice:** Python 3 + Selenium + undetected-chromedriver + redis.  
-- **Database/Cache:** Redis.
+- **Database/Cache:** MySQL & Redis.
 
 ## Installation Instructions
 
-**Prerequisites:** Node.js, npm, JDK 17+, Python 3, Redis.
+**Prerequisites:** Node.js, npm, JDK 24+, Python 3.13.7, Redis/Valkey.
 
 **1. Clone the repository**  
 ```bash
@@ -30,12 +30,12 @@ cd ClosedAI/WebApp
 **2. Backend (Spring Boot)**  
 ```bash
 cd backend2
-./mvnw spring-boot:run
+./mvn spring-boot:run
 ```
 
 **3. Bot service (Python)**  
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt (not made yet)
 python bot_service.py
 ```
 
@@ -46,7 +46,7 @@ npm install
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:5173](http://localhost:5173).
 
 ## Folder Structure
 
@@ -59,12 +59,10 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - **Frontend:**  
   - `npm start` – Dev server.  
-  - `npm run build` – Production build.  
-  - `npm test` – Tests.  
+  - `npm run build` – Production build.   
 
 - **Backend:**  
-  - `./mvnw spring-boot:run` – Run with Maven.  
-  - `./gradlew bootRun` – Run with Gradle.
+  - `./mvn spring-boot:run` – Run with Maven.  
 
 ## Contribution Guide
 
